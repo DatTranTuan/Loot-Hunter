@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PLayer : MonoBehaviour
+public class PLayer : Charactor
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private LayerMask GroupLayer;
@@ -10,9 +10,9 @@ public class PLayer : MonoBehaviour
     [SerializeField] private float jumpForce = 500f;
     [SerializeField] private bool isGrounded = true;
     [SerializeField] private bool isJumping;
-    [SerializeField] private Animator anim;
+    [SerializeField] private GameObject attackArea;
 
-    private string currentAnimName;
+    private bool isAttack;
     private float horizontal;
 
     void Update()
@@ -37,7 +37,6 @@ public class PLayer : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.X) && isGrounded)
             {
                 Attack();
-                Debug.Log("attack");
             }
             if (Input.GetKeyDown(KeyCode.C) && isGrounded)
             {
@@ -66,10 +65,19 @@ public class PLayer : MonoBehaviour
         }
     }
 
+    public override void OnInit()
+    {
+        base.OnInit();
+
+        isAttack = false;
+        ChangeAnim("ilde");
+        attackArea.SetActive(false);
+    }
+
     private void Attack()
     {
         ChangeAnim("attack");
-        
+        attackArea.SetActive(true);
         Invoke(nameof(ResetAttack), 0.5f);
     }
 
@@ -100,14 +108,5 @@ public class PLayer : MonoBehaviour
         rb.AddForce(new Vector2(0f, jumpForce)); 
     }
 
-    private void ChangeAnim(string animName)
-    {
-        if (currentAnimName != animName)
-        {
-            anim.ResetTrigger(animName);
-            currentAnimName = animName;
-            anim.SetTrigger(currentAnimName);
-        }
-
-    }
+   
 }
