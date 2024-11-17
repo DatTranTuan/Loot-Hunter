@@ -1,0 +1,67 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+
+public class S_Patrol : IStateNormal
+{
+    BotControl_dattt botControl_dattt;
+
+    float randomTime;
+    float timer;
+
+    public S_Patrol(BotControl_dattt botControl_dattt)
+    {
+        this.botControl_dattt = botControl_dattt;
+    }
+
+    public void Enter()
+    {
+        Debug.Log("Enter Patrol");
+        timer = 0;
+        randomTime = Random.Range(3f, 6f);
+    }
+
+
+    public void Update()
+    {
+        timer += Time.deltaTime;
+
+        if (botControl_dattt.IsTarget)
+        {
+            botControl_dattt.ChangeDirection(Player_dattt.Instance.transform.position.x > botControl_dattt.transform.position.x);
+
+
+            if (botControl_dattt.IsTargetInRange())
+            {
+                Exit();
+                botControl_dattt.ChangeAttack();
+            }
+            else
+            {
+                botControl_dattt.Moving();
+                botControl_dattt.Anim.Run();
+            }
+
+        }
+        else
+        {
+            if (timer < randomTime)
+            {
+                botControl_dattt.Moving();
+                botControl_dattt.Anim.Run();
+
+            }
+            else
+            {
+                Exit();
+                botControl_dattt.ChangeIdle();
+            }
+        }
+    }
+
+    public void Exit()
+    {
+        botControl_dattt.StateMachine.Exit(botControl_dattt.StateMachine.GetState(typeof(S_Patrol)));
+    }
+}
