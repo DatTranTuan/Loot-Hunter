@@ -14,17 +14,17 @@ public class DataManager : Singleton<DataManager>
 
     public BotData GetBotData(BotType botType)
     {
-        //List<BotData> bots = listBotData;
-        //for (int i = 0; i < bots.Count; i++)
-        //{
-        //    if (botType == bots[i].botType)
-        //    {
-        //        return bots[i];
-        //    }
-        //}
+        List<BotData> bots = listBotData;
+        for (int i = 0; i < bots.Count; i++)
+        {
+            if (botType == bots[i].botType)
+            {
+                return bots[i];
+            }
+        }
 
-        return listBotData[(int)botType];
+        //return listBotData[(int)botType];
 
-        //return null;
+        return null;
     }
 }

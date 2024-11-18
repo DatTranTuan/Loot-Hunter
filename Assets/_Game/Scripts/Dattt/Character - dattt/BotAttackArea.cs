@@ -15,6 +15,7 @@ public class BotAttackArea : MonoBehaviour
     {
         if (collision.gameObject.layer == 6)
         {
+            Debug.Log("Hit Player");
             player = Player_dattt.Instance;
 
             int id = collision.gameObject.GetInstanceID();
@@ -47,14 +48,14 @@ public class BotAttackArea : MonoBehaviour
         }
     }
 
-    public void DealDmg(float dmg)
+    public void BotDealDmg(float dmg)
     {
         foreach (var item in dicTakeDmg.Values)
         {
-            item.TakeDmg(dmg);
+            item.PlayerTakeDmg(dmg);
         }
     }
-         
+
     private void OnDisable()
     {
         isAttack= false;

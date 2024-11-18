@@ -59,7 +59,7 @@ public class Character_dattt : MonoBehaviour , IHealthControlAble
         }
     }
 
-    public void TakeDmg(float dmg)
+    public void PlayerTakeDmg(float dmg)
     {
         dmg = DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal;
 
@@ -69,4 +69,5 @@ public class Character_dattt : MonoBehaviour , IHealthControlAble
             healthBar.UpdateHealthBar(currentHealth, maxHealth);
         }
     }
+
 }

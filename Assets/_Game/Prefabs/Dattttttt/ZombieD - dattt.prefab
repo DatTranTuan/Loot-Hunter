@@ -239,7 +239,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6251092362140707092
 Transform:
   m_ObjectHideFlags: 0
@@ -496,7 +496,8 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
-  attackArea: {fileID: 6251092362140707093}
+  edgeCollider: {fileID: 6251092362140707095}
+  attackArea: {fileID: 6251092362140707094}
 --- !u!114 &6251092362768840984
 MonoBehaviour:
   m_ObjectHideFlags: 0

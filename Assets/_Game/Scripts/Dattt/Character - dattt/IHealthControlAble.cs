@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IHealthControlAble
 {
-    public void TakeDmg(float dmg);
+    public void PlayerTakeDmg(float dmg);
+
 }

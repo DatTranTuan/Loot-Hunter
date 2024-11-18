@@ -27,6 +27,7 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     private bool isRight = true;
     private bool isTarget = false;
     private bool isTakeDmg = false;
+    private bool isDeath = false;
 
     public BotAnimation Anim { get => anim; set => anim = value; }
     public StateMachine StateMachine { get => stateMachine; set => stateMachine = value; }
@@ -35,6 +36,8 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     public bool IsTakeDmg { get => isTakeDmg; set => isTakeDmg = value; }
     public float DamageTaken { get => damageTaken; set => damageTaken = value; }
     public BotType BotType { get => botType; set => botType = value; }
+    public bool IsDeath { get => isDeath; set => isDeath = value; }
+    public Rigidbody2D Rb { get => rb; set => rb = value; }
 
     private void Start()
     {
@@ -91,18 +94,21 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
     public void ChangeTakeHit()
     {
-        if (stateMachine.ActiveStates.Count > 0)
+        if (!isDeath)
         {
-            IStateNormal currentState = stateMachine.ActiveStates[stateMachine.ActiveStates.Count - 1];
-            stateMachine.RemoveState(currentState);
-        }
+            if (stateMachine.ActiveStates.Count > 0)
+            {
+                IStateNormal currentState = stateMachine.ActiveStates[stateMachine.ActiveStates.Count - 1];
+                stateMachine.RemoveState(currentState);
+            }
 
-        if (stateMachine.GetState(typeof(S_TakeHit)) == null)
-        {
-            stateMachine.AddState(new S_TakeHit(this));
-        }
+            if (stateMachine.GetState(typeof(S_TakeHit)) == null)
+            {
+                stateMachine.AddState(new S_TakeHit(this));
+            }
 
-        stateMachine.ChangeState(stateMachine.GetState(typeof(S_TakeHit)));
+            stateMachine.ChangeState(stateMachine.GetState(typeof(S_TakeHit)));
+        }
     }
 
     public void ChangeDeath()
@@ -117,12 +123,12 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
     public void Moving()
     {
-        rb.velocity = transform.right * moveSpeed;
+        Rb.velocity = transform.right * moveSpeed;
     }
 
     public void StopMoving()
     {
-        rb.velocity = Vector2.zero;
+        Rb.velocity = Vector2.zero;
     }
 
     public void Attack()
@@ -133,12 +139,6 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         Debug.Log("UnLeash Sword");
         //StartCoroutine(DelayActiveBox());
         //Invoke(nameof(DeActiveAttack), 0.5f);
-    }
-    private IEnumerator DelayActiveBox() 
-    {
-        yield return new WaitForSeconds(0.15f);
-        ActiveAttack();
-        Invoke(nameof(DeActiveAttack),0.15f);
     }
 
     public bool IsTargetInRange()
@@ -171,9 +171,8 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     private void ActiveAttack()
     {
         //attackArea.PLAYER?.TakeDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal);
-        attackArea.DealDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal);
+        attackArea.BotDealDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal);
         Debug.Log("Dmgggggggg");
-
 
         //edgeCollider.enabled = true;
         //attackArea.SetActive(true);
@@ -193,11 +192,16 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     {
         Vector2 raycastStartPos = new Vector2(transform.position.x, transform.position.y + 1f);
 
+        if (botType == BotType.FlyingEye)
+        {
+            raycastStartPos = new Vector2(transform.position.x, transform.position.y);
+        }
+
         RaycastHit2D hitRight = Physics2D.Raycast(raycastStartPos, Vector2.right, 2.5f, playerLayer);
-        Debug.DrawRay(raycastStartPos, Vector2.right * 3f, Color.green);
+        Debug.DrawRay(raycastStartPos, Vector2.right * 2.5f, Color.green);
 
         RaycastHit2D hitLeft = Physics2D.Raycast(raycastStartPos, Vector2.left, 2.5f, playerLayer);
-        Debug.DrawRay(raycastStartPos, Vector2.left * 3f, Color.red);
+        Debug.DrawRay(raycastStartPos, Vector2.left * 2.5f, Color.red);
 
         return hitRight.collider != null || hitLeft.collider != null;
     }

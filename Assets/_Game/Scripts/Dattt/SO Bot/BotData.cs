@@ -9,7 +9,7 @@ public enum BotType
     Skeleton = 1,
     Goblin = 2,
     Mushroom = 3,
-    NightShade = 4,
+    FlyingEye = 4,
 }
 
 [Serializable]

@@ -17,8 +17,17 @@ public class S_Wait : IStateNormal
     public void Enter()
     {
         Debug.Log("Enter Idle");
+
+        if (botControl_dattt.BotType == BotType.FlyingEye)
+        {
+            botControl_dattt.Anim.Run();
+        }
+        else
+        {
+            botControl_dattt.Anim.Idle();
+        }
+
         botControl_dattt.StopMoving();
-        botControl_dattt.Anim.Idle();
         timer = 0;
         randomTime = Random.Range(2f, 4f);
     }

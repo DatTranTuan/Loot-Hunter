@@ -14,22 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   botDataList:
   - name: Zombie
-    botType: 1
+    botType: 0
     maxHealth: 100
     dmgDeal: 30
   - name: Skeleton
-    botType: 2
+    botType: 1
     maxHealth: 130
     dmgDeal: 55
   - name: Goblin
-    botType: 3
-    maxHealth: 200
+    botType: 2
+    maxHealth: 85
     dmgDeal: 40
   - name: Mushroom
-    botType: 4
+    botType: 3
     maxHealth: 200
     dmgDeal: 80
-  - name: NightShade
-    botType: 5
-    maxHealth: 200
+  - name: FlyingEye
+    botType: 4
+    maxHealth: 10
     dmgDeal: 30

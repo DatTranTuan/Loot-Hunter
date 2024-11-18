@@ -52,11 +52,12 @@ public class Player_dattt : Character_dattt
                 return;
             }
 
-            if (isGrounded && !isJumping && !isRolling)
+            if (isGrounded && !isJumping && !isRolling && !isAttack)
             {
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
                     Jump();
+                    isJumping = false;
                 }
 
                 if (Mathf.Abs(horizontal) > 0.1f)
@@ -105,6 +106,7 @@ public class Player_dattt : Character_dattt
     {
         ChangeAnim("Attack");
         isAttack = true;
+        isRolling = true;
         ActiveAttack();
         Invoke(nameof(ResetAttack), 0.4f);
         Invoke(nameof(DeActiveAttack), 0.4f);
@@ -115,6 +117,7 @@ public class Player_dattt : Character_dattt
         //targetPosition = new Vector2(transform.position.x + transform.right.x * rollForce, transform.position.y);
         //Vector2 newPosition = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
+        rb.velocity = Vector2.zero;
         rb.AddForce(new Vector2(transform.right.x * rollForce, 0));
         //Debug.Log(targetPosition);
 
@@ -152,6 +155,7 @@ public class Player_dattt : Character_dattt
     private void DeActiveAttack()
     {
         attackArea.SetActive(false);
+        isRolling = false;
     }
 
     private bool CheckGrounded()
