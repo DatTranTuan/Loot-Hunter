@@ -55,7 +55,8 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
         if (isDeath)
         {
-            return;
+            StopMoving();
+            ChangeDeath();
         }
     }
 

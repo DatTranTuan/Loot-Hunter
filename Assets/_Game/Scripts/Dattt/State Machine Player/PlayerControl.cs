@@ -229,8 +229,8 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
 
     private bool CheckGrounded()
     {
-        Debug.DrawLine(transform.position, transform.position + Vector3.down * 0.022f, Color.red);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.022f, GroundLayer);
+        Debug.DrawLine(transform.position, transform.position + Vector3.down * 0.025f, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.025f, GroundLayer);
         return hit.collider != null;
     }
 }
