@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c61740bf76a1dc64fa62613ea5128923, type: 3}
+  m_Name: Bot
+  m_EditorClassIdentifier: 
+  botDataList:
+  - name: Zombie
+    botType: 0
+    maxHealth: 100
+    dmgDeal: 30
+  - name: Skeleton
+    botType: 1
+    maxHealth: 130
+    dmgDeal: 55
+  - name: Goblin
+    botType: 2
+    maxHealth: 85
+    dmgDeal: 40
+  - name: Mushroom
+    botType: 3
+    maxHealth: 200
+    dmgDeal: 80
+  - name: FlyingEye
+    botType: 4
+    maxHealth: 10
+    dmgDeal: 30
+  - name: Golem Boss
+    botType: 5
+    maxHealth: 550
+    dmgDeal: 150

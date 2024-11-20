@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - EnemyWall
   - Enemy
-  - AttackZone_Hieu
+  - PSword
   layers:
   - Default
   - TransparentFX
@@ -14,9 +15,9 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
-  - 
-  - 
+  - Enemy
+  - EnemyWall
+  - PSword
   - 
   - 
   - 
