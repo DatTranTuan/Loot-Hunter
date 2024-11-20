@@ -52,6 +52,11 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         stateMachine.Update();
 
         IsTarget = CheckPlayer();
+
+        if (isDeath)
+        {
+            return;
+        }
     }
 
     private void StateInit()
