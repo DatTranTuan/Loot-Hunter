@@ -254,7 +254,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1113572798
 PrefabInstance:
@@ -294,6 +294,10 @@ PrefabInstance:
     - target: {fileID: 6167180842278231478, guid: 313915e344bf32f4c833ce34b24ea359, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6167180842278231479, guid: 313915e344bf32f4c833ce34b24ea359, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6167180842278231479, guid: 313915e344bf32f4c833ce34b24ea359, type: 3}
       propertyPath: m_LocalScale.x
@@ -466,7 +470,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1007597257209767892, guid: 1185e99f66505fb4dbdd9f03e8ed9246, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1007597257209767892, guid: 1185e99f66505fb4dbdd9f03e8ed9246, type: 3}
       propertyPath: m_LocalPosition.x
