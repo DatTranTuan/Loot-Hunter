@@ -33,3 +33,7 @@ MonoBehaviour:
     botType: 4
     maxHealth: 10
     dmgDeal: 30
+  - name: Golem Boss
+    botType: 5
+    maxHealth: 550
+    dmgDeal: 150

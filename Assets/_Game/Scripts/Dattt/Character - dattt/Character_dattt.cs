@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character_dattt : MonoBehaviour , IHealthControlAble
+public class Character_dattt : MonoBehaviour
 {
     [SerializeField] private Animator anim;
     [SerializeField] protected HealthBar_dattt healthBar;
-    [SerializeField] protected float currentHealth;
     [SerializeField] protected float maxHealth;
+    [SerializeField] protected float currentHealth;
 
     private String currentAnimName;
     private float hp;
@@ -59,15 +59,15 @@ public class Character_dattt : MonoBehaviour , IHealthControlAble
         }
     }
 
-    public void PlayerTakeDmg(float dmg)
-    {
-        dmg = DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal;
+    //public void PlayerTakeDmg(float dmg)
+    //{
+    //    dmg = DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal;
 
-        if (!Player_dattt.Instance.IsImune)
-        {
-            currentHealth -= dmg;
-            healthBar.UpdateHealthBar(currentHealth, maxHealth);
-        }
-    }
+    //    if (!Player_dattt.Instance.IsImune)
+    //    {
+    //        currentHealth -= dmg;
+    //        healthBar.UpdateHealthBar(currentHealth, maxHealth);
+    //    }
+    //}
 
 }

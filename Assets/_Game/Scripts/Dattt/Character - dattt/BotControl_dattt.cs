@@ -11,6 +11,7 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     private StateMachine stateMachine;
 
     [SerializeField] private float attackRange;
+    [SerializeField] private float rangeAttackRange;
     [SerializeField] private float moveSpeed;
     [SerializeField] private BotType botType;
     [SerializeField] private Rigidbody2D rb;
@@ -19,8 +20,8 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
     [SerializeField] private BotAttackArea attackArea;
 
-    private IState currentState;
     private float currentHealth;
+    private float raycastRange;
 
     private float damageTaken;
 
@@ -44,7 +45,6 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         StateInit();
 
         currentHealth = DataManager.Instance.GetBotData(BotType).maxHealth;
-        Application.targetFrameRate = 60;
     }
 
     private void Update()
@@ -141,10 +141,23 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         //Invoke(nameof(DeActiveAttack), 0.5f);
     }
 
-    public bool IsTargetInRange()
+    public bool IsTargetInAttackRange()
     {
-        if (IsTarget && Vector2.Distance(Player_dattt.Instance.transform.position, transform.position) <= attackRange)
+        if (IsTarget && Vector2.Distance(PlayerControl.Instance.transform.position, transform.position) <= attackRange)
         {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool IsTargetInRangeAttackRange()
+    {
+        if (IsTarget && Vector2.Distance(PlayerControl.Instance.transform.position, transform.position) <= rangeAttackRange)
+        {
+            Debug.Log("Rangeeeeee");
             return true;
         }
         else
@@ -170,7 +183,7 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     private int indexAttack = 0;
     private void ActiveAttack()
     {
-        //attackArea.PLAYER?.TakeDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal);
+        //attackArea.PLAYER?.PlayerTakeDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal);
         attackArea.BotDealDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal);
         Debug.Log("Dmgggggggg");
 
@@ -182,6 +195,7 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
     private void DeActiveAttack()
     {
+        ChangePatrol();
         //edgeCollider.enabled = false;
 
         //attackArea.SetActive(false);
@@ -190,6 +204,15 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
     public bool CheckPlayer()
     {
+        if (botType == BotType.GolemBoss)
+        {
+            raycastRange = 4.5f;
+        }
+        else
+        {
+            raycastRange = 2.5f;
+        }
+
         Vector2 raycastStartPos = new Vector2(transform.position.x, transform.position.y + 1f);
 
         if (botType == BotType.FlyingEye)
@@ -197,11 +220,11 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
             raycastStartPos = new Vector2(transform.position.x, transform.position.y);
         }
 
-        RaycastHit2D hitRight = Physics2D.Raycast(raycastStartPos, Vector2.right, 2.5f, playerLayer);
-        Debug.DrawRay(raycastStartPos, Vector2.right * 2.5f, Color.green);
+        RaycastHit2D hitRight = Physics2D.Raycast(raycastStartPos, Vector2.right, raycastRange, playerLayer);
+        Debug.DrawRay(raycastStartPos, Vector2.right * raycastRange, Color.green);
 
-        RaycastHit2D hitLeft = Physics2D.Raycast(raycastStartPos, Vector2.left, 2.5f, playerLayer);
-        Debug.DrawRay(raycastStartPos, Vector2.left * 2.5f, Color.red);
+        RaycastHit2D hitLeft = Physics2D.Raycast(raycastStartPos, Vector2.left, raycastRange, playerLayer);
+        Debug.DrawRay(raycastStartPos, Vector2.left * raycastRange, Color.red);
 
         return hitRight.collider != null || hitLeft.collider != null;
     }

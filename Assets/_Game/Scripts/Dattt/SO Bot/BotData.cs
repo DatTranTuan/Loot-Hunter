@@ -10,6 +10,7 @@ public enum BotType
     Goblin = 2,
     Mushroom = 3,
     FlyingEye = 4,
+    GolemBoss = 5,
 }
 
 [Serializable]

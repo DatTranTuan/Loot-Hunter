@@ -95,7 +95,6 @@ public class StateMachine
             RemoveState(GetState(typeof(S_Wait)));
         }
 
-
         if (state is S_Patrol)
         {
             RemoveState(GetState(typeof(S_Patrol)));

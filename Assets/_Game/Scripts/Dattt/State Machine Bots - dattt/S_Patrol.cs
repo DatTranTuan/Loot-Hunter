@@ -29,10 +29,10 @@ public class S_Patrol : IStateNormal
 
         if (botControl_dattt.IsTarget)
         {
-            botControl_dattt.ChangeDirection(Player_dattt.Instance.transform.position.x > botControl_dattt.transform.position.x);
+            botControl_dattt.ChangeDirection(PlayerControl.Instance.transform.position.x > botControl_dattt.transform.position.x);
 
 
-            if (botControl_dattt.IsTargetInRange())
+            if (botControl_dattt.IsTargetInAttackRange())
             {
                 Exit();
                 botControl_dattt.ChangeAttack();

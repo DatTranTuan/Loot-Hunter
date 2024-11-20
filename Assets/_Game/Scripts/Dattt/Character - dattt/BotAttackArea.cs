@@ -9,14 +9,20 @@ public class BotAttackArea : MonoBehaviour
     private bool isAttack = false;
     private IHealthControlAble player;
 
-    public IHealthControlAble PLAYER => player;
+    public IHealthControlAble PLAYER =>  player;
+
+    private void Awake()
+    {
+        player = PlayerControl.Instance;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        player = PlayerControl.Instance;
+
         if (collision.gameObject.layer == 6)
         {
             Debug.Log("Hit Player");
-            player = Player_dattt.Instance;
 
             int id = collision.gameObject.GetInstanceID();
             dicTakeDmg.TryAdd(id, player);
@@ -52,7 +58,14 @@ public class BotAttackArea : MonoBehaviour
     {
         foreach (var item in dicTakeDmg.Values)
         {
-            item.PlayerTakeDmg(dmg);
+            if (item == null) 
+            { 
+                break; 
+            }
+            else
+            {
+                item.PlayerTakeDmg(dmg);
+            }
         }
     }
 
