@@ -18,18 +18,23 @@ public class S_TakeHit : IStateNormal
         botControl_dattt.IsTakeDmg = true;
         botControl_dattt.DamageTaken = 50;
 
-        if (botControl_dattt.IsTakeDmg)
+        if (botControl_dattt.IsTakeDmg && botControl_dattt.BotType != BotType.GolemBoss)
         {
-            //Debug.Log("Bot Take Dmgggg");
             botControl_dattt.CurrentHealth -= botControl_dattt.DamageTaken;
+        }
 
-            if (botControl_dattt.CurrentHealth <= 0)
-            {
-                Exit();
-                botControl_dattt.ChangeDeath();
-            }
+        if (botControl_dattt.CurrentHealth <= 0)
+        {
+            Exit();
+            botControl_dattt.ChangeDeath();
+        }
 
+        if (botControl_dattt.BotType == BotType.GolemBoss && botControl_dattt.IsTakeDmg)
+        {
             botControl_dattt.IsTakeDmg = false;
+            botControl_dattt.CurrentHealth -= botControl_dattt.DamageTaken;
+            Exit();
+            botControl_dattt.ChangeGuard();
         }
     }
 
@@ -45,7 +50,7 @@ public class S_TakeHit : IStateNormal
     public void Update()
     {
         timer += Time.deltaTime;
-        if (timer >= 0.75f)
+        if (timer >= 0.5f)
         {
             Exit();
             botControl_dattt.ChangePatrol();

@@ -16,24 +16,30 @@ MonoBehaviour:
   - name: Zombie
     botType: 0
     maxHealth: 100
-    dmgDeal: 30
+    handDmgDeal: 30
+    bulletDmgDeal: 0
   - name: Skeleton
     botType: 1
     maxHealth: 130
-    dmgDeal: 55
+    handDmgDeal: 55
+    bulletDmgDeal: 0
   - name: Goblin
     botType: 2
     maxHealth: 85
-    dmgDeal: 40
+    handDmgDeal: 40
+    bulletDmgDeal: 0
   - name: Mushroom
     botType: 3
     maxHealth: 200
-    dmgDeal: 80
+    handDmgDeal: 80
+    bulletDmgDeal: 0
   - name: FlyingEye
     botType: 4
     maxHealth: 10
-    dmgDeal: 30
+    handDmgDeal: 75
+    bulletDmgDeal: 0
   - name: Golem Boss
     botType: 5
     maxHealth: 550
-    dmgDeal: 150
+    handDmgDeal: 150
+    bulletDmgDeal: 40

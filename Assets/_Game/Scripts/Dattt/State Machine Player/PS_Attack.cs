@@ -15,16 +15,26 @@ public class PS_Attack : IStatePlayer
     public void Enter()
     {
         Debug.Log("Enter P_Attack");
-        playerControl.Anim.Attack();
-        playerControl.Attack();
+
+        if (!playerControl.IsAttack)
+        {
+            playerControl.Anim.Attack();
+            //playerControl.Attack();
+        }
     }
 
     public void Update()
     {
-        if (!playerControl.IsRolling && playerControl.IsGrounded && !playerControl.IsAttack)
+        //if (!playerControl.IsRolling && playerControl.IsGrounded && !playerControl.IsAttack)
+        //{
+        //    Exit();
+        //    playerControl.ChangeIdle();
+        //}
+        //else
+        if (Input.GetKeyDown(KeyCode.C) && !playerControl.IsAttack)
         {
             Exit();
-            playerControl.ChangeIdle();
+            playerControl.ChangeRoll();
         }
     }
 

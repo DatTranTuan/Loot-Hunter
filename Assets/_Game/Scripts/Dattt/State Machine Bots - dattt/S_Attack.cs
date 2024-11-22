@@ -17,6 +17,8 @@ public class S_Attack : IStateNormal
     {
         Debug.Log("Enter Attack");
 
+        botControl_dattt.IsImune = false;
+
         if (botControl_dattt.IsTarget)
         {
             botControl_dattt.ChangeDirection(PlayerControl.Instance.transform.position.x > botControl_dattt.transform.position.x);

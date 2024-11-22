@@ -102,5 +102,10 @@ public class PlayerStateMachine
         {
             RemoveState(GetState(typeof(PS_TakeHit)));
         }
+
+        if (state is PS_Poison)
+        {
+            RemoveState(GetState(typeof(PS_Poison)));
+        }
     }
 }

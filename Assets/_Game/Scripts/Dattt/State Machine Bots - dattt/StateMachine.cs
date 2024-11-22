@@ -105,9 +105,24 @@ public class StateMachine
             RemoveState(GetState(typeof(S_Attack)));
         }
 
+        if (state is S_RangeAttack)
+        {
+            RemoveState(GetState(typeof(S_RangeAttack)));
+        }
+
+        if (state is S_Laser)
+        {
+            RemoveState(GetState(typeof(S_Laser)));
+        }
+
         if (state is S_TakeHit)
         {
             RemoveState(GetState(typeof(S_TakeHit)));
+        }
+
+        if (state is S_Guard)
+        {
+            RemoveState(GetState(typeof(S_Guard)));
         }
 
         if (state is S_Death)
