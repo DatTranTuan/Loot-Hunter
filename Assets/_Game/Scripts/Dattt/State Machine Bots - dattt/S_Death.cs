@@ -20,7 +20,8 @@ public class S_Death : IStateNormal
         botControl_dattt.IsDeath = true;
         botControl_dattt.StopMoving();
         botControl_dattt.Anim.Death();
-        Exit();
+        botControl_dattt.StateMachine.ActiveStates.Clear();
+        //Exit();
         //botControl_dattt.gameObject.SetActive(false);
     }
 

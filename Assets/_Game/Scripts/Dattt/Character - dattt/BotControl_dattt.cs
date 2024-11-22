@@ -19,6 +19,10 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     [SerializeField] private EdgeCollider2D edgeCollider;
 
     [SerializeField] private BotAttackArea attackArea;
+    [SerializeField] private StoneBullet stonePrefab;
+    [SerializeField] private Transform stoneContain;
+    [SerializeField] private LaserBeam laserPrefab;
+    [SerializeField] private Transform laserContain;
 
     private float currentHealth;
     private float raycastRange;
@@ -28,6 +32,7 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     private bool isRight = true;
     private bool isTarget = false;
     private bool isTakeDmg = false;
+    private bool isImune = false;
     private bool isDeath = false;
 
     public BotAnimation Anim { get => anim; set => anim = value; }
@@ -39,6 +44,7 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     public BotType BotType { get => botType; set => botType = value; }
     public bool IsDeath { get => isDeath; set => isDeath = value; }
     public Rigidbody2D Rb { get => rb; set => rb = value; }
+    public bool IsImune { get => isImune; set => isImune = value; }
 
     private void Start()
     {
@@ -55,7 +61,9 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
         if (isDeath)
         {
-            return;
+            isDeath = true;
+            StopMoving();
+            ChangeDeath();
         }
     }
 
@@ -97,9 +105,29 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         stateMachine.ChangeState(stateMachine.GetState(typeof(S_Attack)));
     }
 
+    public void ChangeRangeAttack()
+    {
+        if (stateMachine.GetState(typeof(S_RangeAttack)) == null)
+        {
+            stateMachine.AddState(new S_RangeAttack(this));
+        }
+
+        stateMachine.ChangeState(stateMachine.GetState(typeof(S_RangeAttack)));
+    }
+
+    public void ChangeLaserAttack()
+    {
+        if (stateMachine.GetState(typeof(S_Laser)) == null)
+        {
+            stateMachine.AddState(new S_Laser(this));
+        }
+
+        stateMachine.ChangeState(stateMachine.GetState(typeof(S_Laser)));
+    }
+
     public void ChangeTakeHit()
     {
-        if (!isDeath)
+        if (!isDeath && !IsImune)
         {
             if (stateMachine.ActiveStates.Count > 0)
             {
@@ -114,6 +142,16 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
             stateMachine.ChangeState(stateMachine.GetState(typeof(S_TakeHit)));
         }
+    }
+
+    public void ChangeGuard()
+    {
+        if (stateMachine.GetState(typeof(S_Guard)) == null)
+        {
+            stateMachine.AddState(new S_Guard(this));
+        }
+
+        stateMachine.ChangeState(stateMachine.GetState(typeof(S_Guard)));
     }
 
     public void ChangeDeath()
@@ -144,6 +182,19 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         Debug.Log("UnLeash Sword");
         //StartCoroutine(DelayActiveBox());
         //Invoke(nameof(DeActiveAttack), 0.5f);
+    }
+
+    public void RangeAttack()
+    {
+        StoneBullet bulletSpawn = Instantiate(stonePrefab, stoneContain.transform.position, Quaternion.identity);
+        bulletSpawn.transform.SetParent(stoneContain);
+        Destroy(bulletSpawn.gameObject, 2f);
+    }
+
+    public void LaserAttack()
+    {
+        LaserBeam laserSpawn = Instantiate(laserPrefab, laserContain.transform.position, Quaternion.identity);
+        laserSpawn.transform.SetParent(laserContain);
     }
 
     public bool IsTargetInAttackRange()
@@ -189,9 +240,7 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     private void ActiveAttack()
     {
         //attackArea.PLAYER?.PlayerTakeDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal);
-        attackArea.BotDealDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal);
-        Debug.Log("Dmgggggggg");
-
+        attackArea.BotDealDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).handDmgDeal);
         //edgeCollider.enabled = true;
         //attackArea.SetActive(true);
         //indexAttack++;
@@ -207,15 +256,22 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         //Debug.LogError($"Time OFF: {Time.frameCount},index {indexAttack}");
     }
 
+    private void DeActiveGuard()
+    {
+        isImune = false;
+        StateMachine.Exit(StateMachine.GetState(typeof(S_Guard)));
+        ChangeAttack();
+    }
+
     public bool CheckPlayer()
     {
         if (botType == BotType.GolemBoss)
         {
-            raycastRange = 4.5f;
+            raycastRange = 9f;
         }
         else
         {
-            raycastRange = 2.5f;
+            raycastRange = 3.5f;
         }
 
         Vector2 raycastStartPos = new Vector2(transform.position.x, transform.position.y + 1f);

@@ -35,7 +35,7 @@ public class Character_dattt : MonoBehaviour
 
     public void TakeDamage(float damageTaken)
     {
-        damageTaken = DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal;
+        damageTaken = DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).handDmgDeal;
 
         if (!Player_dattt.Instance.IsImune)
         {
