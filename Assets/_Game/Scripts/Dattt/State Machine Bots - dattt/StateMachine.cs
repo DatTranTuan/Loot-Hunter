@@ -130,6 +130,11 @@ public class StateMachine
             //Debug.Log(activeStates);
             RemoveState(GetState(typeof(S_Death)));
         }
+
+        if (state is S_Shield)
+        {
+            RemoveState(GetState(typeof(S_Shield)));
+        }
     }
    
 }

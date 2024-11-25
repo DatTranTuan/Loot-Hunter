@@ -58,8 +58,6 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
     {
         PStateMachine.Update();
 
-        Debug.LogError(pStateMachine.ActivePStates[0]);
-
         IsGrounded = CheckGrounded();
         Horizontal = Input.GetAxisRaw("Horizontal");
 
@@ -250,6 +248,14 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
             CurrentHealth -= dmg;
             HealthBar.UpdateHealthBar(CurrentHealth, MaxHealth);
             ChangeTakeHit();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 10)
+        {
+            ChangeDeath();
         }
     }
 

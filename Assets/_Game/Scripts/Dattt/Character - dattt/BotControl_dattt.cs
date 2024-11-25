@@ -125,6 +125,16 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         stateMachine.ChangeState(stateMachine.GetState(typeof(S_Laser)));
     }
 
+    public void ChangeShield()
+    {
+        if (stateMachine.GetState(typeof(S_Shield)) == null)
+        {
+            stateMachine.AddState(new S_Shield(this));
+        }
+
+        stateMachine.ChangeState(stateMachine.GetState(typeof(S_Shield)));
+    }
+
     public void ChangeTakeHit()
     {
         if (!isDeath && !IsImune)
@@ -261,6 +271,13 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         isImune = false;
         StateMachine.Exit(StateMachine.GetState(typeof(S_Guard)));
         ChangeAttack();
+    }
+
+    private void DeActiveShield()
+    {
+        isImune = false;
+        StateMachine.Exit(StateMachine.GetState(typeof(S_Shield)));
+        ChangePatrol();
     }
 
     public bool CheckPlayer()
