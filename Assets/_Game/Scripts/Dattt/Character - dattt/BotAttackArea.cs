@@ -9,7 +9,6 @@ public class BotAttackArea : MonoBehaviour
     private bool isAttack = false;
     private IHealthControlAble player;
 
-    public IHealthControlAble PLAYER =>  player;
 
     private void Awake()
     {

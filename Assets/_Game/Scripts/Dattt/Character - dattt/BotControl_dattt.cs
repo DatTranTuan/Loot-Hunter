@@ -240,7 +240,7 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     private void ActiveAttack()
     {
         //attackArea.PLAYER?.PlayerTakeDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal);
-        attackArea.BotDealDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).handDmgDeal);
+        attackArea.BotDealDmg(DataManager.Instance.GetBotData(botType).handDmgDeal);
         //edgeCollider.enabled = true;
         //attackArea.SetActive(true);
         //indexAttack++;
