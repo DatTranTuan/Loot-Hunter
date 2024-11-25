@@ -449,7 +449,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -457,6 +457,48 @@ TextureImporter:
       bones: []
       spriteID: b6d7c2d322f6a87438f3844e523633ec
       internalID: 1207494215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yellow_Buttons_Pixel_17
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 64
+        width: 32
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00b22d6a333e0cd418f53a6a13717f60
+      internalID: 837213103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yellow_Buttons_Pixel_18
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 64
+        width: 32
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91f3b1c9acc50c54aafbd1bebf81c5d2
+      internalID: -1102922578
       vertices: []
       indices: 
       edges: []
@@ -481,6 +523,8 @@ TextureImporter:
       Yellow_Buttons_Pixel_14: 242829230
       Yellow_Buttons_Pixel_15: -811396658
       Yellow_Buttons_Pixel_16: 1207494215
+      Yellow_Buttons_Pixel_17: 837213103
+      Yellow_Buttons_Pixel_18: -1102922578
       Yellow_Buttons_Pixel_2: 2081059149
       Yellow_Buttons_Pixel_3: -537593219
       Yellow_Buttons_Pixel_4: 1987718641
