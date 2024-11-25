@@ -25,6 +25,7 @@ public class S_TakeHit : IStateNormal
 
         if (botControl_dattt.CurrentHealth <= 0)
         {
+            DataScoreManager.Instance.AddScore();
             Exit();
             botControl_dattt.ChangeDeath();
         }
