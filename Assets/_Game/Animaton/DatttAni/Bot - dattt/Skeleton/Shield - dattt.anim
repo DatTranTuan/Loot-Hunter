@@ -6,7 +6,11 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<<< HEAD:Assets/_Game/Animaton/DatttAni/Bot - dattt/Skeleton/Shield - dattt.anim
   m_Name: Shield - dattt
+========
+  m_Name: Death - dattt
+>>>>>>>> Thanh2:Assets/_Game/Animaton/DatttAni/Bot - dattt/Zombie/Death - dattt.anim
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,6 +24,7 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
+<<<<<<<< HEAD:Assets/_Game/Animaton/DatttAni/Bot - dattt/Skeleton/Shield - dattt.anim
       value: {fileID: 132339924, guid: f3bc3cd4ad330574f808738e33da59ad, type: 3}
     - time: 0.23333333
       value: {fileID: 87165517, guid: f3bc3cd4ad330574f808738e33da59ad, type: 3}
@@ -27,6 +32,19 @@ AnimationClip:
       value: {fileID: -1287546333, guid: f3bc3cd4ad330574f808738e33da59ad, type: 3}
     - time: 0.6666667
       value: {fileID: 834408292, guid: f3bc3cd4ad330574f808738e33da59ad, type: 3}
+========
+      value: {fileID: 458985812, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+    - time: 0.23333333
+      value: {fileID: -1951090958, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+    - time: 0.46666667
+      value: {fileID: -785688915, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+    - time: 0.7
+      value: {fileID: 629927765, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+    - time: 0.93333334
+      value: {fileID: 1889439205, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+    - time: 1.1666666
+      value: {fileID: 1870827237, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+>>>>>>>> Thanh2:Assets/_Game/Animaton/DatttAni/Bot - dattt/Zombie/Death - dattt.anim
     attribute: m_Sprite
     path: 
     classID: 212
@@ -46,16 +64,29 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
+<<<<<<<< HEAD:Assets/_Game/Animaton/DatttAni/Bot - dattt/Skeleton/Shield - dattt.anim
     - {fileID: 132339924, guid: f3bc3cd4ad330574f808738e33da59ad, type: 3}
     - {fileID: 87165517, guid: f3bc3cd4ad330574f808738e33da59ad, type: 3}
     - {fileID: -1287546333, guid: f3bc3cd4ad330574f808738e33da59ad, type: 3}
     - {fileID: 834408292, guid: f3bc3cd4ad330574f808738e33da59ad, type: 3}
+========
+    - {fileID: 458985812, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+    - {fileID: -1951090958, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+    - {fileID: -785688915, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+    - {fileID: 629927765, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+    - {fileID: 1889439205, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+    - {fileID: 1870827237, guid: ba57ccceb45dbbe479b243423957f893, type: 3}
+>>>>>>>> Thanh2:Assets/_Game/Animaton/DatttAni/Bot - dattt/Zombie/Death - dattt.anim
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
+<<<<<<<< HEAD:Assets/_Game/Animaton/DatttAni/Bot - dattt/Skeleton/Shield - dattt.anim
     m_StopTime: 0.68333334
+========
+    m_StopTime: 1.1833333
+>>>>>>>> Thanh2:Assets/_Game/Animaton/DatttAni/Bot - dattt/Zombie/Death - dattt.anim
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
