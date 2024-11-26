@@ -66,7 +66,6 @@ public class DataScoreManager : Singleton<DataScoreManager>
             user = auth.CurrentUser;
             Debug.Log($"Already signed in as: {user.UserId}");
             LoadHighScoreFromFirebase();
-             
         }
     }
 
