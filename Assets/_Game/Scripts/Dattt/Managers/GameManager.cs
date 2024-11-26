@@ -15,6 +15,7 @@ public class GameManager : Singleton<GameManager>
 
     public void LoadScene()
     {
+        // Reload all Scence
         SceneManager.LoadScene("SampleScene");
     }
 }
