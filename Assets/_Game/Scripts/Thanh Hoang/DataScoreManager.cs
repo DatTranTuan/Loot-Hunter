@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class DataScoreManager : Singleton<DataScoreManager>
 {
@@ -15,13 +16,14 @@ public class DataScoreManager : Singleton<DataScoreManager>
     public TMP_Text textScore;
     public TMP_Text textHighScore;
 
-    private int playerScore; 
-    private int highScore; 
-
-    
+    private int playerScore;
+    private int highScore;
 
     void Start()
     {
+        Debug.Log($"HighScoreUI: {highScore}");
+        playerScore = 0;
+        LoadHighScoreFromFirebase();
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             dependencyStatus = task.Result;
@@ -31,20 +33,19 @@ public class DataScoreManager : Singleton<DataScoreManager>
             }
             else
             {
-                Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
+                Debug.LogError($"Could not  resolve all Firebase dependencies: {dependencyStatus}");
             }
         });
-        LoadHighScoreFromFirebase();
-        UpdateScoreUI();
+
     }
 
     void InitializeFirebase()
     {
-        
+
         auth = FirebaseAuth.DefaultInstance;
         reference = FirebaseDatabase.DefaultInstance.RootReference;
 
-        
+
         if (auth.CurrentUser == null)
         {
             auth.SignInAnonymouslyAsync().ContinueWith(task =>
@@ -53,7 +54,7 @@ public class DataScoreManager : Singleton<DataScoreManager>
                 {
                     user = auth.CurrentUser;
                     Debug.Log($"Signed in as: {user.UserId}");
-                    LoadHighScoreFromFirebase(); 
+                    LoadHighScoreFromFirebase();
                 }
                 else
                 {
@@ -66,25 +67,25 @@ public class DataScoreManager : Singleton<DataScoreManager>
             user = auth.CurrentUser;
             Debug.Log($"Already signed in as: {user.UserId}");
             LoadHighScoreFromFirebase();
+
         }
     }
 
-    // Add Score & HighScore
     public void AddScore()
     {
-        playerScore++; 
-        if (playerScore > highScore) 
+        playerScore++;
+        if (playerScore > highScore)
         {
             highScore = playerScore;
-            UpdateHighScoreInFirebase(highScore); 
+            UpdateHighScoreInFirebase(highScore);
         }
-
-        UpdateScoreUI(); 
         UpdateScoreInFirebase(playerScore);
+        UpdateScoreUI();
     }
     // UI
     void UpdateScoreUI()
     {
+        Debug.Log($"Updating UI -> Current Score: {playerScore}, High Score: {highScore}");
         if (textScore != null)
             textScore.text = $"Score: {playerScore}";
 
@@ -92,7 +93,7 @@ public class DataScoreManager : Singleton<DataScoreManager>
             textHighScore.text = $"High Score: {highScore}";
     }
 
-    // Save current score on firebase
+    // Save score on firebase
     void UpdateScoreInFirebase(int score)
     {
         if (user != null)
@@ -123,42 +124,35 @@ public class DataScoreManager : Singleton<DataScoreManager>
             });
         }
     }
-
     void LoadHighScoreFromFirebase()
     {
-        if (user != null)
+       
+        if (user == null) return;
+
+        string userId = user.UserId;
+
+        reference.Child("users").Child(userId).Child("highScore").GetValueAsync().ContinueWith(task =>
         {
-            string userId = user.UserId;
-
-            reference.Child("users").Child(userId).Child("highScore").GetValueAsync().ContinueWith(task =>
+            if (!task.IsCompleted)
             {
-                if (task.IsCompleted && task.Result.Exists)
-                {
-                    highScore = int.Parse(task.Result.Value.ToString());
-                    Debug.Log($"Loaded High Score: {highScore}");
-                }
-                else
-                {
-                    Debug.LogError("Failed to load High Score or High Score does not exist.");
-                }
+                Debug.LogError("Failed to load High Score.");
+                return;
+            }
 
-                UpdateScoreUI();
-            });
-
-            reference.Child("users").Child(userId).Child("score").GetValueAsync().ContinueWith(task =>
+            if (task.Result.Exists)
             {
-                if (task.IsCompleted && task.Result.Exists)
-                {
-                    playerScore = int.Parse(task.Result.Value.ToString());
-                    Debug.Log($"Loaded Player Score: {playerScore}");
-                    UpdateScoreUI();
-                }
-                else
-                {
-                    Debug.LogError("Failed to load Player Score or Player Score does not exist.");
-                }
-            });
-        }
+                highScore = int.Parse(task.Result.Value.ToString());
+                Debug.Log($"Loaded High Score: {highScore}");
+            }
+            else
+            {
+                highScore = 0;
+                Debug.LogWarning("High Score does not exist. Initializing with 0.");
+                UpdateHighScoreInFirebase(highScore);
+            }
+            Debug.Log($"Update UI High Score: {highScore}");
+            UpdateScoreUI();
+        });
     }
 
     void OnApplicationQuit()
@@ -166,6 +160,4 @@ public class DataScoreManager : Singleton<DataScoreManager>
         UpdateScoreInFirebase(playerScore);
         UpdateHighScoreInFirebase(highScore);
     }
-
-
 }
