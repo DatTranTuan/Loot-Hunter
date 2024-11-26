@@ -19,11 +19,11 @@ public class DataScoreManager : Singleton<DataScoreManager>
     private int playerScore;
     private int highScore;
 
-    void Start()
+    void Awake()
     {
         Debug.Log($"HighScoreUI: {highScore}");
         playerScore = 0;
-        LoadHighScoreFromFirebase();
+
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             dependencyStatus = task.Result;
@@ -82,6 +82,12 @@ public class DataScoreManager : Singleton<DataScoreManager>
         UpdateScoreInFirebase(playerScore);
         UpdateScoreUI();
     }
+
+    public void SetActiveHighScore()
+    {
+        textHighScore.gameObject.SetActive(true);
+    }
+
     // UI
     void UpdateScoreUI()
     {
