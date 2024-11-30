@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class PS_Idle : IStatePlayer
 
         playerControl.Anim.Idle();
         playerControl.IsJumping = false;
+        playerControl.IsImune = false;
 
         if (playerControl.IsGrounded)
         {

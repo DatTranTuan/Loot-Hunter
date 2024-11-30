@@ -24,6 +24,11 @@ public class BotAnimation : MonoBehaviour
         ChangeAnim("Attack");
     }
 
+    public void RangeAttack()
+    {
+        ChangeAnim("Range Attack");
+    }
+
     public void Idle()
     {
         ChangeAnim("Idle");
@@ -32,6 +37,16 @@ public class BotAnimation : MonoBehaviour
     public void Run()
     {
         ChangeAnim("Run");
+    }
+
+    public void Guard()
+    {
+        ChangeAnim("Guard");
+    }
+
+    public void Shield()
+    {
+        ChangeAnim("Shield");
     }
 
     public void TakeHit()

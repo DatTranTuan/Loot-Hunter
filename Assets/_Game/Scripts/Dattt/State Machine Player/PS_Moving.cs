@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PS_Moving : IStatePlayer
 {
@@ -68,7 +67,7 @@ public class PS_Moving : IStatePlayer
         }
         else if (Mathf.Abs(playerControl.Horizontal) < 0.01f && !playerControl.IsRolling)
         {
-            if (playerControl.IsGrounded && !playerControl.IsAttack && !playerControl.IsImune && !playerControl.IsRolling)
+            if (playerControl.IsGrounded && !playerControl.IsAttack && !playerControl.IsRolling)
             {
                 Exit();
                 playerControl.ChangeIdle();

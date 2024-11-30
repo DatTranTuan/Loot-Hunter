@@ -58,10 +58,14 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
     {
         PStateMachine.Update();
 
-        Debug.LogError(pStateMachine.ActivePStates[0]);
-
         IsGrounded = CheckGrounded();
         Horizontal = Input.GetAxisRaw("Horizontal");
+
+        if (IsAttack)
+        {
+            Rb.velocity = Vector2.zero;
+            return;
+        }
 
         if (IsDeath)
         {
@@ -73,11 +77,6 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
             isJumping = false;
         }
 
-        if (IsAttack)
-        {
-            Rb.velocity = Vector2.zero;
-            return;
-        }
     }
 
     private void StateInit()
@@ -138,6 +137,25 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
         PStateMachine.ChangeState(PStateMachine.GetState(typeof(PS_Roll)));
     }
 
+    public void ChangePoison()
+    {
+        if(!isDeath)
+        {
+            if (pStateMachine.ActivePStates.Count > 0)
+            {
+                IStatePlayer currentState = pStateMachine.ActivePStates[pStateMachine.ActivePStates.Count - 1];
+                pStateMachine.RemoveState(currentState);
+            }
+
+            if (pStateMachine.GetState(typeof(PS_Poison)) == null)
+            {
+                pStateMachine.AddState(new PS_Poison(this));
+            }
+
+            pStateMachine.ChangeState(pStateMachine.GetState(typeof(PS_Poison)));
+        }
+    }
+
     public void ChangeTakeHit()
     {
         if (!isDeath)
@@ -177,8 +195,8 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
         IsAttack = true;
         IsRolling = true;
         ActiveAttack();
-        Invoke(nameof(ResetAttack), 0.4f);
-        Invoke(nameof(DeActiveAttack), 0.4f);
+        //Invoke(nameof(ResetAttack), 0.4f);
+        //Invoke(nameof(DeActiveAttack), 0.4f);
     }
 
     private void ResetAttack()
@@ -188,6 +206,8 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
 
     private void ActiveAttack()
     {
+        IsAttack = true;
+        IsRolling = true;
         attackArea.SetActive(true);
     }
 
@@ -195,6 +215,11 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
     {
         attackArea.SetActive(false);
         IsRolling = false;
+        isAttack = false;
+        isJumping = false;
+
+        PStateMachine.Exit(PStateMachine.GetState(typeof(PS_Attack)));
+        ChangeIdle();
     }
 
     public void DeActiveRoll()
@@ -215,15 +240,22 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
     //    }
     //}
 
+
     public void PlayerTakeDmg(float dmg)
     {
-        dmg = DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal;
-
         if (!IsImune)
         {
             CurrentHealth -= dmg;
             HealthBar.UpdateHealthBar(CurrentHealth, MaxHealth);
             ChangeTakeHit();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 10)
+        {
+            ChangeDeath();
         }
     }
 

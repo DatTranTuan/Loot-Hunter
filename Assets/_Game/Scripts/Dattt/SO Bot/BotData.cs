@@ -19,5 +19,6 @@ public class BotData
     public string name;
     public BotType botType;
     public float maxHealth;
-    public float dmgDeal;
+    public float handDmgDeal;
+    public float bulletDmgDeal;
 }

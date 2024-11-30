@@ -6,10 +6,8 @@ public class BotAttackArea : MonoBehaviour
 {
     private Dictionary<int, IHealthControlAble> dicTakeDmg = new Dictionary<int, IHealthControlAble>(); 
 
-    private bool isAttack = false;
     private IHealthControlAble player;
 
-    public IHealthControlAble PLAYER =>  player;
 
     private void Awake()
     {
@@ -67,10 +65,5 @@ public class BotAttackArea : MonoBehaviour
                 item.PlayerTakeDmg(dmg);
             }
         }
-    }
-
-    private void OnDisable()
-    {
-        isAttack= false;
     }
 }

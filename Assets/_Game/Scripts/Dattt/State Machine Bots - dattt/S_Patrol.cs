@@ -8,6 +8,7 @@ public class S_Patrol : IStateNormal
     BotControl_dattt botControl_dattt;
 
     float randomTime;
+    float randomAttack;
     float timer;
 
     public S_Patrol(BotControl_dattt botControl_dattt)
@@ -20,6 +21,7 @@ public class S_Patrol : IStateNormal
         Debug.Log("Enter Patrol");
         timer = 0;
         randomTime = Random.Range(3f, 6f);
+        randomAttack = Random.Range(0f, 100f);
     }
 
 
@@ -36,6 +38,19 @@ public class S_Patrol : IStateNormal
             {
                 Exit();
                 botControl_dattt.ChangeAttack();
+            }
+            else if (botControl_dattt.IsTargetInRangeAttackRange())
+            {
+                if (randomAttack < 50f)
+                {
+                    Exit();
+                    botControl_dattt.ChangeRangeAttack();
+                }
+                else
+                {
+                    Exit();
+                    botControl_dattt.ChangeLaserAttack();
+                }
             }
             else
             {

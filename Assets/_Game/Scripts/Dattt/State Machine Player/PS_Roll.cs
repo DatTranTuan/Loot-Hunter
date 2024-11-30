@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
+
 
 public class PS_Roll : IStatePlayer
 {
@@ -14,6 +14,7 @@ public class PS_Roll : IStatePlayer
 
     public void Roll()
     {
+        playerControl.IsAttack = false;
         playerControl.Rb.velocity = Vector2.zero;
         playerControl.Rb.AddForce(new Vector2(playerControl.transform.right.x * playerControl.RollForce, 0));
 
@@ -30,7 +31,7 @@ public class PS_Roll : IStatePlayer
 
     public void Update()
     {
-        if (!playerControl.IsRolling && playerControl.IsGrounded)
+        if (!playerControl.IsRolling && playerControl.IsGrounded && !playerControl.IsImune)
         {
             Exit();
             playerControl.ChangeIdle();
