@@ -16,6 +16,7 @@ public enum BotType
     NightBone = 8,
     MageSkeleton = 9,
     MetalMonster = 10,
+    DeathBringer = 11,
 }
 
 [Serializable]

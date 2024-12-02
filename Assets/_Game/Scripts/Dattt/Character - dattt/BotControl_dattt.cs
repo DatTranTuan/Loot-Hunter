@@ -164,6 +164,16 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         stateMachine.ChangeState(stateMachine.GetState(typeof(S_Guard)));
     }
 
+    public void ChangeTele()
+    {
+        if (stateMachine.GetState(typeof(S_Tele)) == null)
+        {
+            stateMachine.AddState(new S_Tele(this));
+        }
+
+        stateMachine.ChangeState(stateMachine.GetState(typeof(S_Tele)));
+    }
+
     public void ChangeDeath()
     {
         if (stateMachine.GetState(typeof(S_Death)) == null)
@@ -259,7 +269,14 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
     private void DeActiveAttack()
     {
-        ChangePatrol();
+        if (botType == BotType.NightBone)
+        {
+            ChangeIdle();
+        }
+        else
+        {
+            ChangePatrol();
+        }
         //edgeCollider.enabled = false;
 
         //attackArea.SetActive(false);
@@ -280,9 +297,15 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         ChangePatrol();
     }
 
+    private void DeActiveTele()
+    {
+        StateMachine.Exit(StateMachine.GetState(typeof(S_Tele)));
+        ChangeAttack();
+    }
+
     public bool CheckPlayer()
     {
-        if (botType == BotType.GolemBoss)
+        if (botType == BotType.GolemBoss || botType == BotType.NightBone)
         {
             raycastRange = 9f;
         }

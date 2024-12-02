@@ -49,6 +49,11 @@ public class BotAnimation : MonoBehaviour
         ChangeAnim("Shield");
     }
 
+    public void Tele()
+    {
+        ChangeAnim("Tele");
+    }
+
     public void TakeHit()
     {
         ChangeAnim("Take Hit");

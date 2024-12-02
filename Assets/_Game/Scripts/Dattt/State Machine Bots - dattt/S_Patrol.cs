@@ -33,6 +33,11 @@ public class S_Patrol : IStateNormal
         {
             botControl_dattt.ChangeDirection(PlayerControl.Instance.transform.position.x > botControl_dattt.transform.position.x);
 
+            if (botControl_dattt.BotType == BotType.NightBone)
+            {
+                Exit();
+                botControl_dattt.ChangeTele();
+            }
 
             if (botControl_dattt.IsTargetInAttackRange())
             {

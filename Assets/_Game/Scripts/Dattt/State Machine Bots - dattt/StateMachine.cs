@@ -135,6 +135,11 @@ public class StateMachine
         {
             RemoveState(GetState(typeof(S_Shield)));
         }
+
+        if (state is S_Tele)
+        {
+            RemoveState(GetState(typeof(S_Tele)));
+        }
     }
    
 }

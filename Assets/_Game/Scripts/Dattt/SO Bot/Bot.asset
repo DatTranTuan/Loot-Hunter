@@ -68,3 +68,8 @@ MonoBehaviour:
     maxHealth: 400
     handDmgDeal: 110
     bulletDmgDeal: 40
+  - name: Death Bringer
+    botType: 11
+    maxHealth: 400
+    handDmgDeal: 110
+    bulletDmgDeal: 40

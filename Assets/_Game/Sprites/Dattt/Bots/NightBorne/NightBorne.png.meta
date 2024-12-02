@@ -801,10 +801,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_33
+      name: d13
       rect:
         serializedVersion: 2
-        x: 965
+        x: 966
         y: 2
         width: 66
         height: 65
@@ -822,7 +822,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_34
+      name: d14
       rect:
         serializedVersion: 2
         x: 1042
@@ -843,7 +843,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_35
+      name: d15
       rect:
         serializedVersion: 2
         x: 1122
@@ -864,7 +864,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_37
+      name: d16
       rect:
         serializedVersion: 2
         x: 1203
@@ -885,7 +885,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_39
+      name: d17
       rect:
         serializedVersion: 2
         x: 1294
@@ -906,7 +906,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_40
+      name: d
       rect:
         serializedVersion: 2
         x: 24
@@ -927,7 +927,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_41
+      name: d2
       rect:
         serializedVersion: 2
         x: 102
@@ -948,7 +948,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_42
+      name: d3
       rect:
         serializedVersion: 2
         x: 181
@@ -969,7 +969,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_43
+      name: d4
       rect:
         serializedVersion: 2
         x: 257
@@ -990,7 +990,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_44
+      name: d5
       rect:
         serializedVersion: 2
         x: 337
@@ -1011,7 +1011,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_45
+      name: d6
       rect:
         serializedVersion: 2
         x: 417
@@ -1032,7 +1032,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_46
+      name: d7
       rect:
         serializedVersion: 2
         x: 497
@@ -1053,7 +1053,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_47
+      name: d8
       rect:
         serializedVersion: 2
         x: 577
@@ -1074,7 +1074,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_48
+      name: d9
       rect:
         serializedVersion: 2
         x: 657
@@ -1095,7 +1095,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_49
+      name: d10
       rect:
         serializedVersion: 2
         x: 740
@@ -1116,7 +1116,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_50
+      name: d11
       rect:
         serializedVersion: 2
         x: 820
@@ -1137,12 +1137,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_51
+      name: d12
       rect:
         serializedVersion: 2
         x: 900
         y: 10
-        width: 36
+        width: 37
         height: 36
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -1158,7 +1158,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_52
+      name: d18
       rect:
         serializedVersion: 2
         x: 1375
@@ -1179,7 +1179,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_53
+      name: d19
       rect:
         serializedVersion: 2
         x: 1462
@@ -1200,7 +1200,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_54
+      name: d20
       rect:
         serializedVersion: 2
         x: 1543
@@ -1221,7 +1221,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_55
+      name: d21
       rect:
         serializedVersion: 2
         x: 1628
@@ -1242,7 +1242,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_56
+      name: d22
       rect:
         serializedVersion: 2
         x: 1705
@@ -1263,7 +1263,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NightBorne_58
+      name: d23
       rect:
         serializedVersion: 2
         x: 1793
@@ -1321,38 +1321,38 @@ TextureImporter:
       NightBorne_30: 436157703
       NightBorne_31: 1166273420
       NightBorne_32: -752949875
-      NightBorne_33: -1822612385
-      NightBorne_34: -612998529
-      NightBorne_35: 1056294163
       NightBorne_36: 1458327573
-      NightBorne_37: 774590696
       NightBorne_38: -140750721
-      NightBorne_39: 1678186195
       NightBorne_4: 1528637
-      NightBorne_40: -1132746022
-      NightBorne_41: 1633958109
-      NightBorne_42: 620939529
-      NightBorne_43: -1049370937
-      NightBorne_44: -1516729585
-      NightBorne_45: 1386248061
-      NightBorne_46: 1735652378
-      NightBorne_47: -1960925687
-      NightBorne_48: 1070813533
-      NightBorne_49: 1772434726
       NightBorne_5: 1535866047
-      NightBorne_50: 223004993
-      NightBorne_51: 1968861275
-      NightBorne_52: 1611583843
-      NightBorne_53: 2084728000
-      NightBorne_54: -1235637078
-      NightBorne_55: -1376554117
-      NightBorne_56: -2011586937
       NightBorne_57: -1463248177
-      NightBorne_58: -299905494
       NightBorne_6: -2096499800
       NightBorne_7: 27240758
       NightBorne_8: 269050524
       NightBorne_9: 1346013541
+      d: -1132746022
+      d10: 1772434726
+      d11: 223004993
+      d12: 1968861275
+      d13: -1822612385
+      d14: -612998529
+      d15: 1056294163
+      d16: 774590696
+      d17: 1678186195
+      d18: 1611583843
+      d19: 2084728000
+      d2: 1633958109
+      d20: -1235637078
+      d21: -1376554117
+      d22: -2011586937
+      d23: -299905494
+      d3: 620939529
+      d4: -1049370937
+      d5: -1516729585
+      d6: 1386248061
+      d7: 1735652378
+      d8: -1960925687
+      d9: 1070813533
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

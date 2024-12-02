@@ -29,7 +29,7 @@ public class S_Wait : IStateNormal
 
         botControl_dattt.StopMoving();
         timer = 0;
-        randomTime = Random.Range(2f, 4f);
+        randomTime = Random.Range(1f, 2.5f);
     }
 
     public void Update()
