@@ -11,6 +11,11 @@ public enum BotType
     Mushroom = 3,
     FlyingEye = 4,
     GolemBoss = 5,
+    Cultist = 6,
+    EvilTree = 7,
+    NightBone = 8,
+    MageSkeleton = 9,
+    MetalMonster = 10,
 }
 
 [Serializable]

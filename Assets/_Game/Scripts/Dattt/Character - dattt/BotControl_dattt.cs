@@ -243,10 +243,10 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     public void ChangeDirection(bool isRight)
     {
         this.isRight = isRight;
+
         transform.rotation = isRight ? Quaternion.Euler(Vector3.zero) : Quaternion.Euler(Vector3.up * 180);
     }
 
-    private int indexAttack = 0;
     private void ActiveAttack()
     {
         //attackArea.PLAYER?.PlayerTakeDmg(DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).dmgDeal);

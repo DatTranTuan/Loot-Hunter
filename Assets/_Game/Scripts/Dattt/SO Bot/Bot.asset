@@ -43,3 +43,28 @@ MonoBehaviour:
     maxHealth: 550
     handDmgDeal: 150
     bulletDmgDeal: 40
+  - name: Cultist
+    botType: 6
+    maxHealth: 350
+    handDmgDeal: 125
+    bulletDmgDeal: 40
+  - name: EvilTree
+    botType: 7
+    maxHealth: 300
+    handDmgDeal: 100
+    bulletDmgDeal: 40
+  - name: NightBone
+    botType: 8
+    maxHealth: 400
+    handDmgDeal: 110
+    bulletDmgDeal: 40
+  - name: Mage Skeleton
+    botType: 9
+    maxHealth: 400
+    handDmgDeal: 110
+    bulletDmgDeal: 40
+  - name: Metal Monster
+    botType: 10
+    maxHealth: 400
+    handDmgDeal: 110
+    bulletDmgDeal: 40

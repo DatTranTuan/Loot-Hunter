@@ -41,15 +41,23 @@ public class S_Patrol : IStateNormal
             }
             else if (botControl_dattt.IsTargetInRangeAttackRange())
             {
-                if (randomAttack < 50f)
+                if (botControl_dattt.BotType == BotType.GolemBoss)
                 {
-                    Exit();
-                    botControl_dattt.ChangeRangeAttack();
+                    if (randomAttack < 50f)
+                    {
+                        Exit();
+                        botControl_dattt.ChangeRangeAttack();
+                    }
+                    else
+                    {
+                        Exit();
+                        botControl_dattt.ChangeLaserAttack();
+                    }
                 }
                 else
                 {
                     Exit();
-                    botControl_dattt.ChangeLaserAttack();
+                    botControl_dattt.ChangeRangeAttack();
                 }
             }
             else
