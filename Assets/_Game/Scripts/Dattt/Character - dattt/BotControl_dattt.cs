@@ -19,8 +19,8 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     [SerializeField] private EdgeCollider2D edgeCollider;
 
     [SerializeField] private BotAttackArea attackArea;
-    [SerializeField] private StoneBullet stonePrefab;
-    [SerializeField] private Transform stoneContain;
+    [SerializeField] private GameObject rangeBulletPrefab;
+    [SerializeField] private Transform rangeBulletContain;
     [SerializeField] private LaserBeam laserPrefab;
     [SerializeField] private Transform laserContain;
 
@@ -206,8 +206,8 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
     public void RangeAttack()
     {
-        StoneBullet bulletSpawn = Instantiate(stonePrefab, stoneContain.transform.position, Quaternion.identity);
-        bulletSpawn.transform.SetParent(stoneContain);
+        GameObject bulletSpawn = Instantiate(rangeBulletPrefab, rangeBulletContain.transform.position, Quaternion.identity);
+        bulletSpawn.transform.SetParent(rangeBulletContain);
         Destroy(bulletSpawn.gameObject, 2f);
     }
 
@@ -305,7 +305,7 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
     public bool CheckPlayer()
     {
-        if (botType == BotType.GolemBoss || botType == BotType.NightBone)
+        if (botType == BotType.GolemBoss || botType == BotType.NightBone || botType == BotType.DeathBringer)
         {
             raycastRange = 9f;
         }
