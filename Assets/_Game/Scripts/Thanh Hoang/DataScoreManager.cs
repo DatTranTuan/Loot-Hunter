@@ -7,20 +7,25 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
+
 public class DataScoreManager : Singleton<DataScoreManager>
 {
-    public DependencyStatus dependencyStatus;
-    public FirebaseAuth auth;
-    public FirebaseUser user;
-    public DatabaseReference reference;
-    public TMP_Text textScore;
-    public TMP_Text textHighScore;
+    [SerializeField] private DependencyStatus dependencyStatus;
+    [SerializeField]private FirebaseAuth auth;
+    [SerializeField] private FirebaseUser user;
+    [SerializeField] private DatabaseReference reference;
+    [SerializeField] private TMP_Text textScore;
+    [SerializeField] private TMP_Text textHighScore;
+    [SerializeField] private TMP_Text[] topHighScoreTexts;
+    [SerializeField] private GameObject panelHs;
+
 
     private int playerScore;
     private int highScore;
-
+    
     void Awake()
     {
+        
         Debug.Log($"HighScoreUI: {highScore}");
         playerScore = 0;
 
@@ -38,7 +43,6 @@ public class DataScoreManager : Singleton<DataScoreManager>
         });
 
     }
-
     void InitializeFirebase()
     {
 
@@ -73,6 +77,7 @@ public class DataScoreManager : Singleton<DataScoreManager>
 
     public void AddScore()
     {
+        LoadTopHighScores();
         playerScore++;
         if (playerScore > highScore)
         {
@@ -81,11 +86,18 @@ public class DataScoreManager : Singleton<DataScoreManager>
         }
         UpdateScoreInFirebase(playerScore);
         UpdateScoreUI();
+       
     }
 
     public void SetActiveHighScore()
     {
         textHighScore.gameObject.SetActive(true);
+    }
+    //top hs
+    public void SetActiveTopHs()
+    {
+        panelHs.gameObject.SetActive(true);
+        LoadTopHighScores();
     }
 
     // UI
@@ -166,4 +178,61 @@ public class DataScoreManager : Singleton<DataScoreManager>
         UpdateScoreInFirebase(playerScore);
         UpdateHighScoreInFirebase(highScore);
     }
+
+    void LoadTopHighScores()
+    {
+        reference.Child("users")
+            .OrderByChild("highScore")
+            .LimitToLast(5)
+            .GetValueAsync().ContinueWith(task =>
+            {
+                if (task.IsCompleted && !task.IsFaulted)
+                {
+                    DataSnapshot snapshot = task.Result;
+
+                    if (snapshot.Exists)
+                    {
+                        Debug.Log($"Snapshot retrieved: {snapshot.ChildrenCount} entries.");
+                        List<KeyValuePair<string, int>> topScores = new List<KeyValuePair<string, int>>();
+
+                        foreach (var child in snapshot.Children)
+                        {
+                            string username = child.Child("username").Value?.ToString();
+                            int highScore = int.Parse(child.Child("highScore").Value.ToString());
+                            topScores.Add(new KeyValuePair<string, int>(username, highScore));
+
+                            Debug.Log($"User: {username}, HighScore: {highScore}");
+                        }
+
+                        topScores.Sort((x, y) => y.Value.CompareTo(x.Value));
+                        //update UI
+                        UnityMainThreadDispatcher.Enqueue(() =>
+                        {
+                            for (int i = 0; i < topHighScoreTexts.Length; i++)
+                            {
+                                if (i < topScores.Count)
+                                {
+                                    topHighScoreTexts[i].text = $"{topScores[i].Key}: {topScores[i].Value}";
+                                    
+                                    Debug.Log($"UI Updated {i + 1}: {topScores[i].Key}: {topScores[i].Value}");
+                                }
+                                else
+                                {
+                                    topHighScoreTexts[i].text = ""; 
+                                }
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No data found for top high scores.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"Failed to retrieve top high scores: {task.Exception}");
+                }
+            });
+    }
+
 }

@@ -27,6 +27,7 @@ public class S_TakeHit : IStateNormal
         {
             DataScoreManager.Instance.AddScore();
             DataScoreManager.Instance.SetActiveHighScore();
+            
 
             Exit();
             botControl_dattt.ChangeDeath();

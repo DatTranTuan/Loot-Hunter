@@ -18,7 +18,7 @@ public class S_Patrol : IStateNormal
 
     public void Enter()
     {
-        Debug.Log("Enter Patrol");
+       
         timer = 0;
         randomTime = Random.Range(3f, 6f);
         randomAttack = Random.Range(0f, 100f);
