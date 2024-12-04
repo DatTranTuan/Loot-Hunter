@@ -197,13 +197,18 @@ public class DataScoreManager : Singleton<DataScoreManager>
 
                         foreach (var child in snapshot.Children)
                         {
-                            string username = child.Child("username").Value?.ToString();
-                            int highScore = int.Parse(child.Child("highScore").Value.ToString());
-                            topScores.Add(new KeyValuePair<string, int>(username, highScore));
+                            string username = child.Child("username").Value?.ToString() ?? "Unknown";
 
+                            int highScore = 0; 
+                            if (child.HasChild("highScore") && 
+                            int.TryParse(child.Child("highScore").Value?.ToString(), out int parsedScore))
+                            {
+                                highScore = parsedScore;
+                            }
+
+                            topScores.Add(new KeyValuePair<string, int>(username, highScore));
                             Debug.Log($"User: {username}, HighScore: {highScore}");
                         }
-
                         topScores.Sort((x, y) => y.Value.CompareTo(x.Value));
                         //update UI
                         UnityMainThreadDispatcher.Enqueue(() =>
