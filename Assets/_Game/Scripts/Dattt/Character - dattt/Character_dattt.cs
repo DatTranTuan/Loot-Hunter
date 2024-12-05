@@ -37,11 +37,6 @@ public class Character_dattt : MonoBehaviour
     {
         damageTaken = DataManager.Instance.GetBotData(BotControl_dattt.Instance.BotType).handDmgDeal;
 
-        if (!Player_dattt.Instance.IsImune)
-        {
-            currentHealth -= damageTaken;
-            healthBar.UpdateHealthBar(currentHealth, maxHealth);
-        }
     }
 
     //public override void TakeDmg(float dmg)

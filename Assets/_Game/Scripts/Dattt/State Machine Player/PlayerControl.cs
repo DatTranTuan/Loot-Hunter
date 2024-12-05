@@ -26,6 +26,7 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
     private bool isAttack = false;
     private bool isDeath = false;
     private bool isRolling = false;
+    private bool isReduce = false;
 
     private float horizontal;
 
@@ -48,6 +49,7 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
     public float CurrentHealth { get => currentHealth; set => currentHealth = value; }
     public HealthBar_dattt HealthBar { get => healthBar; set => healthBar = value; }
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public bool IsReduce { get => isReduce; set => isReduce = value; }
 
     private void Start()
     {
@@ -245,7 +247,15 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
     {
         if (!IsImune)
         {
-            CurrentHealth -= dmg;
+            if (isReduce)
+            {
+                CurrentHealth -= dmg * 0.65f;
+            }
+            else
+            {
+                CurrentHealth -= dmg;
+            }
+
             HealthBar.UpdateHealthBar(CurrentHealth, MaxHealth);
             ChangeTakeHit();
         }

@@ -54,6 +54,11 @@ public class BotAnimation : MonoBehaviour
         ChangeAnim("Tele");
     }
 
+    public void Dash()
+    {
+        ChangeAnim("Dash");
+    }
+
     public void TakeHit()
     {
         ChangeAnim("Take Hit");

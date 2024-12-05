@@ -45,7 +45,6 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     public bool IsDeath { get => isDeath; set => isDeath = value; }
     public Rigidbody2D Rb { get => rb; set => rb = value; }
     public bool IsImune { get => isImune; set => isImune = value; }
-
     private void Start()
     {
         StateInit();
@@ -301,6 +300,15 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     {
         StateMachine.Exit(StateMachine.GetState(typeof(S_Tele)));
         ChangeAttack();
+    }
+
+    public void ReSpawn()
+    {
+        isDeath = false;
+        currentHealth = DataManager.Instance.GetBotData(botType).maxHealth;
+        StateMachine.Exit(StateMachine.GetState(typeof(S_Death)));
+        stateMachine.ActiveStates.Clear();
+        ChangeIdle();
     }
 
     public bool CheckPlayer()

@@ -15,8 +15,10 @@ public class S_Tele : IStateNormal
     public void Enter()
     {
         Debug.Log("Enter Tele");
+
         botControl_dattt.Anim.Tele();
-        Vector3 directionBehindPlayer = - PlayerControl.Instance.transform.right;
+
+        Vector3 directionBehindPlayer = -PlayerControl.Instance.transform.right;
 
         Vector3 backPosition = PlayerControl.Instance.transform.position + directionBehindPlayer * 1.5f;
         botControl_dattt.transform.position = backPosition;
@@ -24,7 +26,7 @@ public class S_Tele : IStateNormal
 
     public void Update()
     {
-       
+
     }
 
     public void Exit()

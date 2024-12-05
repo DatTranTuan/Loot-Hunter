@@ -28,6 +28,13 @@ public class S_TakeHit : IStateNormal
             //DataScoreManager.Instance.AddScore();
             //DataScoreManager.Instance.SetActiveHighScore();
 
+            if (botControl_dattt.BotType == BotType.GolemBoss)
+            {
+                UIManager.Instance.Map1.SetActive(false);
+                UIManager.Instance.WinPanel.SetActive(true);
+                Time.timeScale = 0f;
+            }
+
             Exit();
             botControl_dattt.ChangeDeath();
         }

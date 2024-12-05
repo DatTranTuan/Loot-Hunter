@@ -21,6 +21,12 @@ public class S_Attack : IStateNormal
 
         botControl_dattt.IsImune = false;
 
+        if (botControl_dattt.CurrentHealth == 0)
+        {
+            Exit();
+            botControl_dattt.ChangeDeath();
+        }
+
         if (botControl_dattt.IsTarget)
         {
             if (botControl_dattt.BotType != BotType.Skeleton)

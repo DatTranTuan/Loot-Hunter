@@ -60,12 +60,12 @@ MonoBehaviour:
     bulletDmgDeal: 40
   - name: Mage Skeleton
     botType: 9
-    maxHealth: 400
+    maxHealth: 260
     handDmgDeal: 110
     bulletDmgDeal: 40
   - name: Metal Monster
     botType: 10
-    maxHealth: 400
+    maxHealth: 200
     handDmgDeal: 110
     bulletDmgDeal: 40
   - name: Death Bringer
