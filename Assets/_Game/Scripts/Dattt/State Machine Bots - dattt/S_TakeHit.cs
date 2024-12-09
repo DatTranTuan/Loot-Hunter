@@ -27,6 +27,7 @@ public class S_TakeHit : IStateNormal
         {
             DataScoreManager.Instance.AddScore();
             DataScoreManager.Instance.SetActiveHighScore();
+            
 
             if (botControl_dattt.BotType == BotType.GolemBoss)
             {

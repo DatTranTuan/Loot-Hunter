@@ -17,6 +17,7 @@ public class PS_Death : IStatePlayer
         playerControl.Rb.velocity = Vector2.zero;
         playerControl.IsDeath = true;
         playerControl.Anim.Death();
+        DataScoreManager.Instance.SetActiveTopHs();
     }
 
     public void Update()

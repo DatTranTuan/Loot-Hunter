@@ -17,6 +17,7 @@ public class PS_TakeHit : IStatePlayer
         {
             Exit();
             playerControl.ChangeDeath();
+            
         }
     }
 

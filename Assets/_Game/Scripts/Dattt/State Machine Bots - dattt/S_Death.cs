@@ -26,7 +26,7 @@ public class S_Death : IStateNormal
 
     public void Enter()
     {
-        Debug.Log("Enter Death");
+       
         Death();
     }
 
