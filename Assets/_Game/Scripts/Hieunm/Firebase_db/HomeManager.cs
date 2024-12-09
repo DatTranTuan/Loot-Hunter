@@ -23,6 +23,7 @@ public class HomeManager : MonoBehaviour
     public Button quitAccountButton;
     public GameObject homePanel;
 
+    public GameObject datPanel;
 
     [Header("Settings Panel")]
     public GameObject settingsPanel;
@@ -39,57 +40,16 @@ public class HomeManager : MonoBehaviour
         // Gán sự kiện cho các nút
         newGameButton.onClick.AddListener(NewGame);
         continueButton.onClick.AddListener(ContinueGame);
-        settingsButton.onClick.AddListener(OpenSettings);
+        settingsButton.onClick.AddListener(ShowSettings);
         quitButton.onClick.AddListener(QuitGame);
         quitAccountButton.onClick.AddListener(QuitAccount);
 
-        // Hiển thị tên người chơi
-        DisplayUserName();
     }
 
-    private void DisplayUserName()
-    {
-        if (auth.CurrentUser != null)
-        {
-            string userId = auth.CurrentUser.UserId;
-
-            // Lấy dữ liệu từ Firebase
-            databaseReference.Child("users").Child(userId).Child("username").GetValueAsync().ContinueWithOnMainThread(task =>
-            {
-                if (task.IsFaulted)
-                {
-                    Debug.LogError("Error fetching username: " + task.Exception);
-                    userNameText.text = "Welcome, Guest!";
-                }
-                else if (task.IsCompleted)
-                {
-                    if (task.Result.Exists)
-                    {
-                        string username = task.Result.Value.ToString();
-                        userNameText.text = $"Welcome, {username}!";
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Username does not exist in database.");
-                        userNameText.text = "Welcome, Guest!";
-                    }
-                }
-            });
-        }
-        else
-        {
-            Debug.LogWarning("No user is currently logged in.");
-            userNameText.text = "Welcome, Guest!";
-        }
-    }
-
-    public void NewGame()
+    private void NewGame()
     {
         Debug.Log("Starting a new game...");
         // Thêm logic khởi tạo game mới
-        homePanel.SetActive(false);
-        loginPanel.SetActive(false);
-        map1.SetActive(true);
     }
 
     private void ContinueGame()
@@ -114,18 +74,23 @@ public class HomeManager : MonoBehaviour
     {
         Debug.Log("Logging out...");
         auth.SignOut(); // Đăng xuất tài khoản
-        // Chuyển về màn hình đăng nhập
+
+        // Làm sạch dữ liệu tạm thời
+        ClearUserNameDisplay();
         ShowLogin();
     }
 
+    private void ShowHome()
+    {
+        settingsPanel.SetActive(false);
+    }    
+
     private void ShowLogin()
     {
-        // Chuyển về giao diện đăng nhập (nếu cần)
-        Debug.Log("Redirecting to Login Screen...");
-        loginPanel.SetActive(true);
+        loginPanel.SetActive(true); // Chuyển về màn hình đăng nhập
         homePanel.SetActive(false);
         settingsPanel.SetActive(false);
-    }
+    }    
 
     private void ShowSettings()
     {
@@ -133,9 +98,10 @@ public class HomeManager : MonoBehaviour
         homePanel.SetActive(true);
     }
 
-    private void ShowHome()
+    private void ClearUserNameDisplay()
     {
-        homePanel.SetActive(true);
-        settingsPanel.SetActive(false);
+        userNameText.text = "Welcome!";
+        Debug.Log("Cleared username display.");
     }
+
 }
