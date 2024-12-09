@@ -8,7 +8,7 @@ public class S_Attack : IStateNormal
 
     float timer;
 
-    float randomShield;
+    float randomNum;
 
     public S_Attack(BotControl_dattt botControl_dattt)
     {
@@ -35,13 +35,30 @@ public class S_Attack : IStateNormal
                 botControl_dattt.StopMoving();
 
                 //botControl_dattt.Attack();
-                botControl_dattt.Anim.Attack();
+
+                if (botControl_dattt.BotType == BotType.Cthulu)
+                {
+                    randomNum = Random.Range(0f, 100f);
+
+                    if(randomNum <= 50f)
+                    {
+                        botControl_dattt.Anim.Attack();
+                    }
+                    else
+                    {
+                        botControl_dattt.Anim.RangeAttack();
+                    }
+                }
+                else
+                {
+                    botControl_dattt.Anim.Attack();
+                }
             }
             else
             {
-                randomShield = Random.Range(0f, 100f);
+                randomNum = Random.Range(0f, 100f);
 
-                if (randomShield <= 50f)
+                if (randomNum <= 50f)
                 {
                     Exit();
                     botControl_dattt.ChangeShield();

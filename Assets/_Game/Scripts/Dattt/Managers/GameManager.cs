@@ -5,10 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+    [SerializeField] private Transform currentCheckPoint;
+
     [SerializeField] private Transform spawnMap1;
     [SerializeField] private Transform spawnMap2;
 
+    [SerializeField] private GameObject cthulu;
+    [SerializeField] private GameObject nightBone;
+
     [SerializeField] private List<BotControl_dattt> listBots = new List<BotControl_dattt>();
+
+    public GameObject Cthulu { get => cthulu; set => cthulu = value; }
+    public GameObject NightBone { get => nightBone; set => nightBone = value; }
+    public Transform CurrentTransform { get => currentCheckPoint; set => currentCheckPoint = value; }
 
     private void Update()
     {
@@ -27,11 +36,25 @@ public class GameManager : Singleton<GameManager>
     {
         if (UIManager.Instance.Map1.gameObject.activeInHierarchy)
         {
-            PlayerControl.Instance.transform.position = spawnMap1.position;
+            if (currentCheckPoint == null)
+            {
+                PlayerControl.Instance.transform.position = spawnMap1.position;
+            }
+            else
+            {
+                PlayerControl.Instance.transform.position = currentCheckPoint.position;
+            }
         }
         else if (UIManager.Instance.Map2.gameObject.activeInHierarchy)
         {
-            PlayerControl.Instance.transform.position = spawnMap2.position;
+            if (currentCheckPoint == null)
+            {
+                PlayerControl.Instance.transform.position = spawnMap2.position;
+            }
+            else
+            {
+                PlayerControl.Instance.transform.position = currentCheckPoint.position;
+            }
         }
 
         MageMate.Instance.Anim.Idle();

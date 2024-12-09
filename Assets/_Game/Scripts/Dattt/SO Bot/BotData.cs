@@ -17,6 +17,7 @@ public enum BotType
     MageSkeleton = 9,
     MetalMonster = 10,
     DeathBringer = 11,
+    Cthulu = 12,
 }
 
 [Serializable]

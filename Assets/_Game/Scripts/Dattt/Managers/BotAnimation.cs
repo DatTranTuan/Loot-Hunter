@@ -59,6 +59,11 @@ public class BotAnimation : MonoBehaviour
         ChangeAnim("Dash");
     }
 
+    public void Fly()
+    {
+        ChangeAnim("Fly");
+    }
+
     public void TakeHit()
     {
         ChangeAnim("Take Hit");
@@ -67,5 +72,25 @@ public class BotAnimation : MonoBehaviour
     public void Death()
     {
         ChangeAnim("Death");
+    }
+
+    public void Balance()
+    {
+        ChangeAnim("Balance");
+    }
+
+    public void Hip()
+    {
+        ChangeAnim("Hip");
+    }
+
+    public void Slide()
+    {
+        ChangeAnim("Slide");
+    }
+
+    public void Snap()
+    {
+        ChangeAnim("Snap");
     }
 }

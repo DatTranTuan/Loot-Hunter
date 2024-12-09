@@ -16,6 +16,12 @@ public class S_Tele : IStateNormal
     {
         Debug.Log("Enter Tele");
 
+        if (botControl_dattt.CurrentHealth <= 0)
+        {
+            Exit();
+            botControl_dattt.ChangeDeath();
+        }
+
         botControl_dattt.Anim.Tele();
 
         Vector3 directionBehindPlayer = -PlayerControl.Instance.transform.right;

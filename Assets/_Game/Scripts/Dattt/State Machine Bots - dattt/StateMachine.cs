@@ -140,6 +140,11 @@ public class StateMachine
         {
             RemoveState(GetState(typeof(S_Tele)));
         }
+
+        if (state is S_Fly)
+        {
+            RemoveState(GetState(typeof(S_Fly)));
+        }
     }
    
 }

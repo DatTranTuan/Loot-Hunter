@@ -30,9 +30,7 @@ public class S_TakeHit : IStateNormal
 
             if (botControl_dattt.BotType == BotType.GolemBoss)
             {
-                UIManager.Instance.Map1.SetActive(false);
-                UIManager.Instance.WinPanel.SetActive(true);
-                Time.timeScale = 0f;
+                BotControl_dattt.Instance.StartDelayWinning();
             }
 
             Exit();
@@ -43,8 +41,22 @@ public class S_TakeHit : IStateNormal
         {
             botControl_dattt.IsTakeDmg = false;
             botControl_dattt.CurrentHealth -= botControl_dattt.DamageTaken;
+
+            if (botControl_dattt.BotType == BotType.GolemBoss && botControl_dattt.CurrentHealth <= 0)
+            {
+                BotControl_dattt.Instance.StartDelayWinning();
+            }
+
             Exit();
             botControl_dattt.ChangeGuard();
+        }
+
+        if (botControl_dattt.BotType == BotType.Cthulu && botControl_dattt.IsTakeDmg)
+        {
+            botControl_dattt.IsTakeDmg = false;
+            botControl_dattt.CurrentHealth -= botControl_dattt.DamageTaken;
+            Exit();
+            botControl_dattt.ChangeFly();
         }
     }
 

@@ -33,6 +33,7 @@ public class PS_Moving : IStatePlayer
 
             playerControl.Rb.velocity = new Vector2(playerControl.Horizontal * playerControl.Speed, playerControl.Rb.velocity.y);
             playerControl.transform.rotation = Quaternion.Euler(new Vector3(0, playerControl.Horizontal > 0 ? 0 : 180, 0));
+            playerControl.HealthBar.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
 
             if (playerControl.PStateMachine.ActivePStates.Contains(playerControl.PStateMachine.GetState(typeof(PS_Jump))))
             {

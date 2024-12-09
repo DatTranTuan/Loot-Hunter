@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using Random = UnityEngine.Random;
 
 public class BotControl_dattt : Singleton<BotControl_dattt>
 {
@@ -24,16 +25,28 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     [SerializeField] private LaserBeam laserPrefab;
     [SerializeField] private Transform laserContain;
 
+    private Transform startBPosition;
+
     private float currentHealth;
     private float raycastRange;
 
     private float damageTaken;
 
+    public Transform startPosition;
     private bool isRight = true;
     private bool isTarget = false;
     private bool isTakeDmg = false;
     private bool isImune = false;
     private bool isDeath = false;
+
+    private float flyHeight = 5f;
+    private float flightDuration = 2f;
+    private float loopRadius = 3f;
+    private int loopSegments = 36;
+    public float minX = 389f;
+    public float maxX = 446f;
+
+    private bool isFlying = false;
 
     public BotAnimation Anim { get => anim; set => anim = value; }
     public StateMachine StateMachine { get => stateMachine; set => stateMachine = value; }
@@ -45,6 +58,9 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     public bool IsDeath { get => isDeath; set => isDeath = value; }
     public Rigidbody2D Rb { get => rb; set => rb = value; }
     public bool IsImune { get => isImune; set => isImune = value; }
+    public Transform StartPosition { get => startPosition; set => startPosition = value; }
+    public bool IsFlying { get => isFlying; set => isFlying = value; }
+
     private void Start()
     {
         StateInit();
@@ -173,6 +189,16 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         stateMachine.ChangeState(stateMachine.GetState(typeof(S_Tele)));
     }
 
+    public void ChangeFly()
+    {
+        if (stateMachine.GetState(typeof(S_Fly)) == null)
+        {
+            stateMachine.AddState(new S_Fly(this));
+        }
+
+        stateMachine.ChangeState(stateMachine.GetState(typeof(S_Fly)));
+    }
+
     public void ChangeDeath()
     {
         if (stateMachine.GetState(typeof(S_Death)) == null)
@@ -214,6 +240,12 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
     {
         LaserBeam laserSpawn = Instantiate(laserPrefab, laserContain.transform.position, Quaternion.identity);
         laserSpawn.transform.SetParent(laserContain);
+    }
+
+    public void ActiveLastBoss()
+    {
+        GameManager.Instance.NightBone.SetActive(false);
+        GameManager.Instance.Cthulu.SetActive(true);
     }
 
     public bool IsTargetInAttackRange()
@@ -266,6 +298,76 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         //Debug.LogError($"Time On: {Time.frameCount}, index {indexAttack}");
     }
 
+    public void StartFly()
+    {
+        StartCoroutine(FlyAndReturn());
+        SpawnCthuluBalls();
+    }
+
+    public void SpawnCthuluBalls()
+    {
+        for (int i = 0; i < 40; i++)
+        {
+            float randomX = Random.Range(minX, maxX);
+
+            Vector3 spawnPosition = new Vector3(randomX, -105, 0);
+
+            GameObject spawnCthuBall = Instantiate(rangeBulletPrefab, spawnPosition, Quaternion.Euler(0, 0, 90));
+        }
+    }
+
+    private IEnumerator FlyAndReturn()
+    {
+        if (IsFlying) yield break;
+        IsFlying = true;
+
+        Vector3 originalPosition = transform.position;
+
+        Vector3 upPosition = originalPosition + Vector3.up * flyHeight;
+        yield return MoveToPosition(upPosition, flightDuration);
+
+        Vector3[] loopPath = GenerateLoopPath(upPosition, loopRadius, loopSegments);
+        foreach (Vector3 targetPoint in loopPath)
+        {
+            yield return MoveToPosition(targetPoint, flightDuration / loopSegments);
+        }
+
+        yield return MoveToPosition(originalPosition, flightDuration);
+
+        IsFlying = false;
+    }
+
+    private IEnumerator MoveToPosition(Vector3 targetPosition, float duration)
+    {
+        Vector3 startPosition = transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = targetPosition;
+    }
+
+    private Vector3[] GenerateLoopPath(Vector3 center, float radius, int segments)
+    {
+        Vector3[] path = new Vector3[segments];
+        float angleStep = 360f / segments;
+
+        for (int i = 0; i < segments; i++)
+        {
+            float angle = Mathf.Deg2Rad * i * angleStep;
+            float x = center.x + Mathf.Cos(angle) * radius;
+            float z = center.z + Mathf.Sin(angle) * radius;
+            path[i] = new Vector3(x, center.y, z);
+        }
+
+        return path;
+    }
+
     private void DeActiveAttack()
     {
         if (botType == BotType.NightBone)
@@ -304,11 +406,32 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
 
     public void ReSpawn()
     {
-        isDeath = false;
-        currentHealth = DataManager.Instance.GetBotData(botType).maxHealth;
-        StateMachine.Exit(StateMachine.GetState(typeof(S_Death)));
-        stateMachine.ActiveStates.Clear();
-        ChangeIdle();
+        if (gameObject.activeInHierarchy)
+        {
+            isDeath = false;
+            currentHealth = DataManager.Instance.GetBotData(botType).maxHealth;
+            if (stateMachine.ActiveStates != null && stateMachine.GetState(typeof(S_Death)) != null)
+            {
+                StateMachine.Exit(StateMachine.GetState(typeof(S_Death)));
+            }
+
+            stateMachine.ActiveStates.Clear();
+            ChangeIdle();
+        }
+    }
+
+    public void StartDelayWinning()
+    {
+        StartCoroutine(DelayWinning());
+    }
+
+    public IEnumerator DelayWinning()
+    {
+        yield return new WaitForSeconds(1f);
+
+        UIManager.Instance.Map1.SetActive(false);
+        UIManager.Instance.WinPanel.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     public bool CheckPlayer()
