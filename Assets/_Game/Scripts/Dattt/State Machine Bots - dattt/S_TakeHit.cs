@@ -25,13 +25,17 @@ public class S_TakeHit : IStateNormal
 
         if (botControl_dattt.CurrentHealth <= 0)
         {
+            SoundManager.Instance.Play("SDeath");
+
+            GameManager.Instance.SpawnFloatText();
+
             DataScoreManager.Instance.AddScore();
             DataScoreManager.Instance.SetActiveHighScore();
             
 
-            if (botControl_dattt.BotType == BotType.GolemBoss)
+            if (botControl_dattt.BotType == BotType.GolemBoss || botControl_dattt.BotType == BotType.DeathBringer)
             {
-                BotControl_dattt.Instance.StartDelayWinning();
+                GameManager.Instance.StartDelayWinning();
             }
 
             Exit();
@@ -45,11 +49,23 @@ public class S_TakeHit : IStateNormal
 
             if (botControl_dattt.BotType == BotType.GolemBoss && botControl_dattt.CurrentHealth <= 0)
             {
-                BotControl_dattt.Instance.StartDelayWinning();
+                GameManager.Instance.SpawnFloatText();
+
+                DataScoreManager.Instance.AddScore();
+                DataScoreManager.Instance.SetActiveHighScore();
+
+                SoundManager.Instance.Play("SDeath");
+
+                Exit();
+                botControl_dattt.ChangeDeath();
+                GameManager.Instance.StartDelayWinning();
+            }
+            else
+            {
+                Exit();
+                botControl_dattt.ChangeGuard();
             }
 
-            Exit();
-            botControl_dattt.ChangeGuard();
         }
 
         if (botControl_dattt.BotType == BotType.Cthulu && botControl_dattt.IsTakeDmg)

@@ -89,6 +89,15 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
         pS_Idle.Enter();
     }
 
+    public void PlayerReset()
+    {
+        CurrentHealth = MaxHealth;
+        HealthBar.UpdateHealthBar(CurrentHealth, MaxHealth);
+        IsDeath = false;
+        PStateMachine.Exit(PStateMachine.GetState(typeof(PS_Death)));
+        ChangeIdle();
+    }
+
     public void ChangeIdle()
     {
         if (PStateMachine.GetState(typeof(PS_Idle)) == null)
@@ -247,6 +256,8 @@ public class PlayerControl : Singleton<PlayerControl>, IHealthControlAble
     {
         if (!IsImune)
         {
+            SoundManager.Instance.Play("PHurt");
+
             if (isReduce)
             {
                 CurrentHealth -= dmg * 0.65f;

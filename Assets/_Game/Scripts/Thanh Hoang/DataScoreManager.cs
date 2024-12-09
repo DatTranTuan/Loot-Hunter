@@ -77,7 +77,7 @@ public class DataScoreManager : Singleton<DataScoreManager>
 
     public void AddScore()
     {
-        LoadTopHighScores();
+        //LoadTopHighScores();
         playerScore++;
         if (playerScore > highScore)
         {

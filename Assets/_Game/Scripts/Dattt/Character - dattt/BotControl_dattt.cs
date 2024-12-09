@@ -420,20 +420,6 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         }
     }
 
-    public void StartDelayWinning()
-    {
-        StartCoroutine(DelayWinning());
-    }
-
-    public IEnumerator DelayWinning()
-    {
-        yield return new WaitForSeconds(1f);
-
-        UIManager.Instance.Map1.SetActive(false);
-        UIManager.Instance.WinPanel.SetActive(true);
-        Time.timeScale = 0f;
-    }
-
     public bool CheckPlayer()
     {
         if (botType == BotType.GolemBoss || botType == BotType.NightBone || botType == BotType.DeathBringer)

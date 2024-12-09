@@ -8,7 +8,7 @@ public class CheckPoint : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            GameManager.Instance.CurrentTransform = transform;
+            GameManager.Instance.CurrentCheckPoint = transform;
         }
     }
 }

@@ -13,11 +13,17 @@ public class PS_Death : IStatePlayer
 
     public void Enter()
     {
+        SoundManager.Instance.Play("PDeath");
+
         playerControl.PStateMachine.ActivePStates.Clear();
         playerControl.Rb.velocity = Vector2.zero;
         playerControl.IsDeath = true;
         playerControl.Anim.Death();
+
+
         DataScoreManager.Instance.SetActiveTopHs();
+
+        UIManager.Instance.DeathPanel.SetActive(true);
     }
 
     public void Update()

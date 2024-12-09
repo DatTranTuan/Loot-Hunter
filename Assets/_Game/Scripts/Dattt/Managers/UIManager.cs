@@ -6,25 +6,94 @@ using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject playPanel;
+    [SerializeField] private GameObject deathPanel;
+    [SerializeField] private GameObject endGamePanel;
+
     [SerializeField] private Button nextLevelBtn;
+    [SerializeField] private Button restartBtn;
+    [SerializeField] private Button replayBtn;
+    [SerializeField] private Button backEndBtn;
 
     [SerializeField] private GameObject map1;
     [SerializeField] private GameObject map2;
+    [SerializeField] private GameObject map3;
+    [SerializeField] private GameObject allMap;
+    [SerializeField] private GameObject loginPanel;
+
+    [SerializeField] private GameObject mageMate;
+    [SerializeField] private Text reduceText;
+    [SerializeField] private Text fireBallText;
 
     public GameObject WinPanel { get => winPanel; set => winPanel = value; }
     public GameObject Map1 { get => map1; set => map1 = value; }
     public GameObject Map2 { get => map2; set => map2 = value; }
+    public GameObject Map3 { get => map3; set => map3 = value; }
+    public Text FireBallText { get => fireBallText; set => fireBallText = value; }
+    public Text ReduceText { get => reduceText; set => reduceText = value; }
+    public GameObject PlayPanel { get => playPanel; set => playPanel = value; }
+    public GameObject DeathPanel { get => DeathPanel1; set => DeathPanel1 = value; }
+    public GameObject DeathPanel1 { get => deathPanel; set => deathPanel = value; }
+    public GameObject EndGamePanel { get => endGamePanel; set => endGamePanel = value; }
 
     private void Start()
     {
+        if (map2.activeInHierarchy || map3.activeInHierarchy)
+        {
+            mageMate.SetActive(true);
+            MageMate.Instance.IsReady = true;
+
+            playPanel.SetActive(true);
+            reduceText.text = MageMate.Instance.ReduceIndex.ToString();
+            fireBallText.text = MageMate.Instance.FireBallIndex.ToString();
+        }
+
         nextLevelBtn.onClick.AddListener(ClickNextLevel);
+        restartBtn.onClick.AddListener(ClickRestartBtn);
+        replayBtn.onClick.AddListener(GameManager.Instance.Replay);
+        backEndBtn.onClick.AddListener(ClickBackBtn);
     }
 
     public void ClickNextLevel()
     {
-        Map1.gameObject.SetActive(false);
-        nextLevelBtn.gameObject.SetActive(false);
-        Map2.gameObject.SetActive(true);
+        if (map1.activeInHierarchy)
+        {
+            Map1.gameObject.SetActive(false);
+            winPanel.SetActive(false);
+            Map2.gameObject.SetActive(true);
+            mageMate.SetActive(true);
+            Time.timeScale = 1f;
+        }
+        else if (map2.activeInHierarchy)
+        {
+            Map2.gameObject.SetActive(false);
+            winPanel.SetActive(false);
+            Map3.gameObject.SetActive(true);
+            Time.timeScale = 1f;
+        }
+
+        playPanel.SetActive(true);
+
+        MageMate.Instance.IsReady = true;
+        MageMate.Instance.ResetSpell();
+
+        PlayerControl.Instance.PlayerReset();
+
+        GameManager.Instance.CurrentCheckPoint = null;
+    }
+
+    public void ClickRestartBtn ()
+    {
+        GameManager.Instance.CurrentCheckPoint = null;
+        GameManager.Instance.Replay();
         Time.timeScale = 1f;
+        winPanel.SetActive(false);
+    }
+
+    public void ClickBackBtn()
+    {
+        endGamePanel.SetActive(false);
+        allMap.SetActive(false);
+        loginPanel.SetActive(true);
     }
 }

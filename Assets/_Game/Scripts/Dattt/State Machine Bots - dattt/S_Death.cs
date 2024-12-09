@@ -12,6 +12,7 @@ public class S_Death : IStateNormal
 
     private void Death()
     {
+
         if (botControl_dattt.BotType == BotType.FlyingEye)
         {
             botControl_dattt.Rb.gravityScale = 1;

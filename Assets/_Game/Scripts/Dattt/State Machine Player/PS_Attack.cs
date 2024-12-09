@@ -14,6 +14,8 @@ public class PS_Attack : IStatePlayer
 
     public void Enter()
     {
+        SoundManager.Instance.Play("Slash");
+
         Debug.Log("Enter P_Attack");
 
         if (!playerControl.IsAttack)
