@@ -12,6 +12,7 @@ public class FirebaseManager : MonoBehaviour
 {
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
+    public HomeManager home;
 
     [Header("Register")]
     public Button regis_btn;
@@ -39,6 +40,7 @@ public class FirebaseManager : MonoBehaviour
     [Header("Home")]
     public GameObject homePanel;
     public GameObject settingsPanel;
+    public TMP_Text userNameText;
 
     [Header("Hide/Show Pass")]
     public Image toggleIcon;
@@ -84,54 +86,82 @@ public class FirebaseManager : MonoBehaviour
 
     public void LoginUser()
     {
-        string loginemail = loginemailField.text;
+        string loginemail = loginemailField.text.Trim();
         string loginpass = loginpasswordField.text;
 
         // Kiểm tra email
         if (string.IsNullOrEmpty(loginemail))
         {
-            Debug.Log("Email is empty");
+            Debug.Log("Email cannot be empty!");
             return; // Dừng lại nếu email trống
         }
 
         // Kiểm tra định dạng email
         if (!IsValidEmail2(loginemail))
         {
-            Debug.Log("Invalid email format");
+            Debug.Log("Please enter a valid email address!");
             return; // Dừng lại nếu email không hợp lệ
         }
 
         // Kiểm tra mật khẩu
         if (string.IsNullOrEmpty(loginpass))
         {
-            Debug.Log("Password is empty");
+            Debug.Log("Password cannot be empty!");
             return; // Dừng lại nếu mật khẩu trống
         }
 
         // Tiến hành đăng nhập người dùng
-
         auth.SignInWithEmailAndPasswordAsync(loginemail, loginpass).ContinueWithOnMainThread(task =>
         {
             if (task.IsCanceled)
             {
-                Debug.Log("Login canceled");
-                return;
+                Debug.Log("Login process was canceled. Please try again.");
+                return; // Không chuyển màn nếu bị hủy
             }
+
             if (task.IsFaulted)
             {
-                Debug.Log("Login failed");
+                // Xử lý các lỗi từ Firebase
+                FirebaseException firebaseEx = task.Exception?.GetBaseException() as FirebaseException;
+                if (firebaseEx != null)
+                {
+                    AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
+                    switch (errorCode)
+                    {
+                        case AuthError.InvalidEmail:
+                            Debug.Log("The email address is invalid. Please check and try again.");
+                            break;
+                        case AuthError.WrongPassword:
+                            Debug.Log("Incorrect password. Please try again.");
+                            break;
+                        case AuthError.UserNotFound:
+                            Debug.Log("No account found with this email. Please register first.");
+                            break;
+                        default:
+                            Debug.Log($"Login failed with error: {firebaseEx.Message}");
+                            break;
+                    }
+                }
+                else
+                {
+                    Debug.Log("An unknown error occurred. Please try again.");
+                }
+                return; // Không chuyển màn nếu có lỗi
             }
+
             if (task.IsCompleted)
             {
-                Debug.Log("Login successful");
+                Debug.Log("Login successful!");
                 FirebaseUser user = task.Result.User;
-
+                
+                // Chuyển sang màn hình chính
                 ShowHome();
+                DisplayUserName();
             }
         });
     }
 
-    // Hàm kiểm tra định dạng email
+    // Kiểm tra định dạng email
     private bool IsValidEmail2(string email)
     {
         try
@@ -231,6 +261,52 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
+    private void DisplayUserName()
+    {
+        if (auth.CurrentUser != null)
+        {
+            string userId = auth.CurrentUser.UserId;
+
+            // Lấy dữ liệu từ Firebase
+            databaseReference.Child("users").Child(userId).Child("username").GetValueAsync().ContinueWithOnMainThread(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    Debug.LogError("Error fetching username: " + task.Exception);
+                    userNameText.text = "Welcome, Guest!";
+                }
+                else if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    if (snapshot.Exists && snapshot.Value != null)
+                    {
+                        string username = snapshot.Value.ToString().Trim();
+                        if (!string.IsNullOrEmpty(username))
+                        {
+                            Debug.Log($"Username fetched: {username}");
+                            userNameText.text = $"Welcome, {username}!";
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Username is empty in the database.");
+                            userNameText.text = "Welcome, Guest!";
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Username does not exist in database.");
+                        userNameText.text = "Welcome, Guest!";
+                    }
+                }
+            });
+        }
+        else
+        {
+            Debug.LogWarning("No user is currently logged in.");
+            userNameText.text = "Welcome, Guest!";
+        }
+    }
+
     private void SaveUserData(string userId, string username, string email)
     {
         DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
@@ -282,7 +358,7 @@ public class FirebaseManager : MonoBehaviour
 
             }
         });
-    }
+    } 
 
 
     //Chuyển màn hình
