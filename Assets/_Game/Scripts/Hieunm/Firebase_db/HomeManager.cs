@@ -21,7 +21,9 @@ public class HomeManager : MonoBehaviour
     public Button settingsButton;
     public Button quitButton;
     public Button quitAccountButton;
+    public Button HighScoreButton;
     public GameObject homePanel;
+    public GameObject highScorePanel;
 
     public GameObject datPanel;
 
@@ -43,17 +45,15 @@ public class HomeManager : MonoBehaviour
         settingsButton.onClick.AddListener(ShowSettings);
         quitButton.onClick.AddListener(QuitGame);
         quitAccountButton.onClick.AddListener(QuitAccount);
+        HighScoreButton.onClick.AddListener(HighScoreTop);
 
     }
 
     private void NewGame()
     {
         Debug.Log("Starting a new game...");
-        // Thêm logic khởi tạo game mới
-
         homePanel.SetActive(false);
         loginPanel.SetActive(false);
-
         map1.SetActive(true);
     }
 
@@ -85,9 +85,10 @@ public class HomeManager : MonoBehaviour
         ShowLogin();
     }
 
-    private void ShowHome()
+    public void ShowHome()
     {
         settingsPanel.SetActive(false);
+        highScorePanel.SetActive(false);
     }    
 
     private void ShowLogin()
@@ -109,4 +110,10 @@ public class HomeManager : MonoBehaviour
         Debug.Log("Cleared username display.");
     }
 
+    private void HighScoreTop()
+    {
+        highScorePanel.SetActive(true);
+        settingsPanel.SetActive(false);
+        loginPanel.SetActive(false);
+    }
 }

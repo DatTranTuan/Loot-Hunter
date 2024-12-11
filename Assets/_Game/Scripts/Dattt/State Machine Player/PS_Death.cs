@@ -20,9 +20,6 @@ public class PS_Death : IStatePlayer
         playerControl.IsDeath = true;
         playerControl.Anim.Death();
 
-
-        //DataScoreManager.Instance.SetActiveTopHs();
-
         UIManager.Instance.DeathPanel.SetActive(true);
     }
 
