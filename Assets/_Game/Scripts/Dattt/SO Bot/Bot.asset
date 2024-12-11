@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c61740bf76a1dc64fa62613ea5128923, type: 3}
+  m_Name: Bot
+  m_EditorClassIdentifier: 
+  botDataList:
+  - name: Zombie
+    botType: 0
+    maxHealth: 100
+    handDmgDeal: 30
+    bulletDmgDeal: 0
+  - name: Skeleton
+    botType: 1
+    maxHealth: 130
+    handDmgDeal: 55
+    bulletDmgDeal: 0
+  - name: Goblin
+    botType: 2
+    maxHealth: 85
+    handDmgDeal: 40
+    bulletDmgDeal: 0
+  - name: Mushroom
+    botType: 3
+    maxHealth: 200
+    handDmgDeal: 80
+    bulletDmgDeal: 0
+  - name: FlyingEye
+    botType: 4
+    maxHealth: 10
+    handDmgDeal: 75
+    bulletDmgDeal: 0
+  - name: Golem Boss
+    botType: 5
+    maxHealth: 550
+    handDmgDeal: 150
+    bulletDmgDeal: 40
+  - name: Cultist
+    botType: 6
+    maxHealth: 350
+    handDmgDeal: 125
+    bulletDmgDeal: 40
+  - name: EvilTree
+    botType: 7
+    maxHealth: 300
+    handDmgDeal: 100
+    bulletDmgDeal: 40
+  - name: NightBone
+    botType: 8
+    maxHealth: 400
+    handDmgDeal: 110
+    bulletDmgDeal: 40
+  - name: Mage Skeleton
+    botType: 9
+    maxHealth: 260
+    handDmgDeal: 110
+    bulletDmgDeal: 40
+  - name: Metal Monster
+    botType: 10
+    maxHealth: 200
+    handDmgDeal: 110
+    bulletDmgDeal: 40
+  - name: Death Bringer
+    botType: 11
+    maxHealth: 400
+    handDmgDeal: 110
+    bulletDmgDeal: 40
+  - name: Cthulu
+    botType: 12
+    maxHealth: 1000
+    handDmgDeal: 110
+    bulletDmgDeal: 40
