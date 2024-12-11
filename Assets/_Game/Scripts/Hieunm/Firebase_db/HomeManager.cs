@@ -50,6 +50,11 @@ public class HomeManager : MonoBehaviour
     {
         Debug.Log("Starting a new game...");
         // Thêm logic khởi tạo game mới
+
+        homePanel.SetActive(false);
+        loginPanel.SetActive(false);
+
+        map1.SetActive(true);
     }
 
     private void ContinueGame()

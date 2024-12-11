@@ -197,7 +197,7 @@ public class DataScoreManager : Singleton<DataScoreManager>
 
                         foreach (var child in snapshot.Children)
                         {
-                            string username = child.Child("username").Value?.ToString() ?? "Unknown";
+                            string username = child.Child("username").Value?.ToString();
 
                             int highScore = 0; 
                             if (child.HasChild("highScore") && 
