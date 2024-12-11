@@ -5,10 +5,18 @@ using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
+    [SerializeField] private GameObject eventSystem;
+
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject playPanel;
     [SerializeField] private GameObject deathPanel;
+    [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject endGamePanel;
+
+    [SerializeField] private Button pauseBtn;
+    [SerializeField] private Button resumeBtn;
+    [SerializeField] private Button restart2Btn;
+    [SerializeField] private Button quitMenuBtn;
 
     [SerializeField] private Button nextLevelBtn;
     [SerializeField] private Button restartBtn;
@@ -19,7 +27,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject map2;
     [SerializeField] private GameObject map3;
     [SerializeField] private GameObject allMap;
-    [SerializeField] private GameObject loginPanel;
+    [SerializeField] private GameObject homePanel;
 
     [SerializeField] private GameObject mageMate;
     [SerializeField] private Text reduceText;
@@ -52,25 +60,37 @@ public class UIManager : Singleton<UIManager>
         restartBtn.onClick.AddListener(ClickRestartBtn);
         replayBtn.onClick.AddListener(GameManager.Instance.Replay);
         backEndBtn.onClick.AddListener(ClickBackBtn);
+
+        pauseBtn.onClick.AddListener(ClickPauseBtn);
+        resumeBtn.onClick.AddListener(ClickResumeBtn);
+        restart2Btn.onClick.AddListener(ClickRestartBtn);
+        quitMenuBtn.onClick.AddListener(ClickQuitMenuBtn);
     }
 
     public void ClickNextLevel()
     {
         if (map1.activeInHierarchy)
         {
-            Map1.gameObject.SetActive(false);
             winPanel.SetActive(false);
-            Map2.gameObject.SetActive(true);
+
+            //Map1.gameObject.SetActive(false);
+            //Map2.gameObject.SetActive(true);
+
             mageMate.SetActive(true);
             Time.timeScale = 1f;
         }
         else if (map2.activeInHierarchy)
         {
-            Map2.gameObject.SetActive(false);
             winPanel.SetActive(false);
-            Map3.gameObject.SetActive(true);
+
+            //Map2.gameObject.SetActive(false);
+            //Map3.gameObject.SetActive(true);
+
             Time.timeScale = 1f;
         }
+
+        DataLevelManager.Instance.NextLevel();
+        GameManager.Instance.CheckSpawnPos();
 
         playPanel.SetActive(true);
 
@@ -80,6 +100,7 @@ public class UIManager : Singleton<UIManager>
         PlayerControl.Instance.PlayerReset();
 
         GameManager.Instance.CurrentCheckPoint = null;
+
     }
 
     public void ClickRestartBtn ()
@@ -88,12 +109,32 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.Replay();
         Time.timeScale = 1f;
         winPanel.SetActive(false);
+        pausePanel.SetActive(false);
     }
 
     public void ClickBackBtn()
     {
         endGamePanel.SetActive(false);
         allMap.SetActive(false);
-        loginPanel.SetActive(true);
+        homePanel.SetActive(true);
+
+        HomeManager.Instance.EventSystem.SetActive(true);
+        this.eventSystem.SetActive(false);
+    }
+
+    public void ClickPauseBtn()
+    {
+        pausePanel.SetActive(true);
+    }
+
+    public void ClickResumeBtn()
+    {
+        pausePanel.SetActive(false);
+    }
+
+    public void ClickQuitMenuBtn()
+    {
+        allMap.SetActive(false);
+        homePanel.SetActive(true);
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class HomeManager : MonoBehaviour
+public class HomeManager : Singleton<HomeManager>
 {
     public FirebaseManager firebaseManager;
     private FirebaseAuth auth;
@@ -21,7 +21,9 @@ public class HomeManager : MonoBehaviour
     public Button settingsButton;
     public Button quitButton;
     public Button quitAccountButton;
+    public Button HighScoreButton;
     public GameObject homePanel;
+    public GameObject highScorePanel;
 
     public GameObject datPanel;
 
@@ -29,7 +31,12 @@ public class HomeManager : MonoBehaviour
     public GameObject settingsPanel;
 
 
-    [SerializeField] private GameObject map1;
+    [SerializeField] private GameObject allMap;
+
+    [SerializeField] private GameObject hieunm;
+    [SerializeField] private GameObject eventSystem;
+
+    public GameObject EventSystem { get => eventSystem; set => eventSystem = value; }
 
     void Start()
     {
@@ -43,19 +50,35 @@ public class HomeManager : MonoBehaviour
         settingsButton.onClick.AddListener(ShowSettings);
         quitButton.onClick.AddListener(QuitGame);
         quitAccountButton.onClick.AddListener(QuitAccount);
+        HighScoreButton.onClick.AddListener(HighScoreTop);
 
     }
 
     private void NewGame()
     {
+        eventSystem.SetActive(false);
+
         Debug.Log("Starting a new game...");
-        // Thêm logic khởi tạo game mới
+        loginPanel.SetActive(false);
+        homePanel.SetActive(false);
+        allMap.SetActive(true);
+        DataLevelManager.Instance.NewGame();
     }
 
     private void ContinueGame()
     {
+        eventSystem.SetActive(false);
+
         Debug.Log("Continuing the game...");
         // Thêm logic tiếp tục game (tải dữ liệu cũ)
+
+        loginPanel.SetActive(false);
+        homePanel.SetActive(false);
+
+        allMap.SetActive(true);
+
+        DataLevelManager.Instance.ContinueGame();
+        GameManager.Instance.CheckSpawnPos();
     }
 
     private void OpenSettings()
@@ -80,9 +103,10 @@ public class HomeManager : MonoBehaviour
         ShowLogin();
     }
 
-    private void ShowHome()
+    public void ShowHome()
     {
         settingsPanel.SetActive(false);
+        highScorePanel.SetActive(false);
     }    
 
     private void ShowLogin()
@@ -104,4 +128,10 @@ public class HomeManager : MonoBehaviour
         Debug.Log("Cleared username display.");
     }
 
+    private void HighScoreTop()
+    {
+        highScorePanel.SetActive(true);
+        settingsPanel.SetActive(false);
+        loginPanel.SetActive(false);
+    }
 }
