@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
+    [SerializeField] private GameObject eventSystem;
+
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject playPanel;
     [SerializeField] private GameObject deathPanel;
@@ -69,19 +71,26 @@ public class UIManager : Singleton<UIManager>
     {
         if (map1.activeInHierarchy)
         {
-            Map1.gameObject.SetActive(false);
             winPanel.SetActive(false);
-            Map2.gameObject.SetActive(true);
+
+            //Map1.gameObject.SetActive(false);
+            //Map2.gameObject.SetActive(true);
+
             mageMate.SetActive(true);
             Time.timeScale = 1f;
         }
         else if (map2.activeInHierarchy)
         {
-            Map2.gameObject.SetActive(false);
             winPanel.SetActive(false);
-            Map3.gameObject.SetActive(true);
+
+            //Map2.gameObject.SetActive(false);
+            //Map3.gameObject.SetActive(true);
+
             Time.timeScale = 1f;
         }
+
+        DataLevelManager.Instance.NextLevel();
+        GameManager.Instance.CheckSpawnPos();
 
         playPanel.SetActive(true);
 
@@ -92,7 +101,6 @@ public class UIManager : Singleton<UIManager>
 
         GameManager.Instance.CurrentCheckPoint = null;
 
-        DataLevelManager.Instance.PlayerCompletedLevel();
     }
 
     public void ClickRestartBtn ()
@@ -109,6 +117,9 @@ public class UIManager : Singleton<UIManager>
         endGamePanel.SetActive(false);
         allMap.SetActive(false);
         homePanel.SetActive(true);
+
+        HomeManager.Instance.EventSystem.SetActive(true);
+        this.eventSystem.SetActive(false);
     }
 
     public void ClickPauseBtn()

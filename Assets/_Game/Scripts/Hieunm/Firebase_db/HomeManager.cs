@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class HomeManager : MonoBehaviour
+public class HomeManager : Singleton<HomeManager>
 {
     public FirebaseManager firebaseManager;
     private FirebaseAuth auth;
@@ -31,7 +31,12 @@ public class HomeManager : MonoBehaviour
     public GameObject settingsPanel;
 
 
-    [SerializeField] private GameObject map1;
+    [SerializeField] private GameObject allMap;
+
+    [SerializeField] private GameObject hieunm;
+    [SerializeField] private GameObject eventSystem;
+
+    public GameObject EventSystem { get => eventSystem; set => eventSystem = value; }
 
     void Start()
     {
@@ -51,16 +56,29 @@ public class HomeManager : MonoBehaviour
 
     private void NewGame()
     {
+        eventSystem.SetActive(false);
+
         Debug.Log("Starting a new game...");
-        homePanel.SetActive(false);
         loginPanel.SetActive(false);
-        map1.SetActive(true);
+        homePanel.SetActive(false);
+        allMap.SetActive(true);
+        DataLevelManager.Instance.NewGame();
     }
 
     private void ContinueGame()
     {
+        eventSystem.SetActive(false);
+
         Debug.Log("Continuing the game...");
         // Thêm logic tiếp tục game (tải dữ liệu cũ)
+
+        loginPanel.SetActive(false);
+        homePanel.SetActive(false);
+
+        allMap.SetActive(true);
+
+        DataLevelManager.Instance.ContinueGame();
+        GameManager.Instance.CheckSpawnPos();
     }
 
     private void OpenSettings()

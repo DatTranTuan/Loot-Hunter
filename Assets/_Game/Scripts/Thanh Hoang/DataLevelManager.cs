@@ -1,145 +1,140 @@
 ﻿using Firebase.Database;
 using Firebase.Auth;
 using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 
 public class DataLevelManager : Singleton<DataLevelManager>
 {
-    [SerializeField] private Transform levelParent;
-    [SerializeField] private GameObject[] levelPrefabs;
-    private GameObject currentPlayer;
+    [SerializeField] private List<GameObject> listMap = new List<GameObject>();
 
+    private DatabaseReference databaseReference;
     private FirebaseAuth auth;
-    private FirebaseUser user;
-    private DatabaseReference reference;
+    private string userId;
+    private int currentLevel;
+    private int testLevel;
 
     private void Start()
     {
-        InitializeFirebase();
-        StartCoroutine(LoadLevelFromFirebase());  
+        FireBaseInit();
     }
 
-    private void InitializeFirebase()
+    public void FireBaseInit()
     {
         auth = FirebaseAuth.DefaultInstance;
-        user = auth.CurrentUser;
-        reference = FirebaseDatabase.DefaultInstance.RootReference;
+        databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
+
+        if (auth.CurrentUser != null)
+        {
+            userId = auth.CurrentUser.UserId;
+            CheckCurrentLevel();
+        }
+        else
+        {
+            Debug.LogError("Người dùng chưa đăng nhập");
+            userId = null;
+        }
     }
 
- 
-    public void SaveLevelToFirebase(int level)
-    {
-        if (user == null) return;
 
-        string userId = user.UserId;
-        reference.Child("users").Child(userId).Child("currentLevel").SetValueAsync(level).ContinueWith(task =>
+    private void LoadCurrentLevel(int level)
+    {
+        listMap[level - 1].SetActive(true);
+    }
+
+    public async void CheckCurrentLevel()
+    {
+        // lỗi vãi đái
+        if (string.IsNullOrEmpty(userId))
         {
-            if (task.IsCompleted)
+            currentLevel = 1;
+            //return;
+        }
+
+        try
+        {
+            DataSnapshot snapshot = await databaseReference.Child("users").Child(userId).Child("currentLevel").GetValueAsync();
+            if (snapshot.Exists)
             {
-                Debug.Log($"Successfully saved level {level} to Firebase.");
+                currentLevel = int.Parse(snapshot.Value.ToString());
+                Debug.Log("Level hiện tại từ Firebase: " + currentLevel);
             }
             else
             {
-                Debug.LogError("Failed to save level to Firebase.");
+                Debug.Log("Khởi tạo level 1.");
+                currentLevel = 1;
+                SaveCurrentLevel(); 
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Lỗi khi tải level từ Firebase: " + e.Message);
+        }
+    }
+
+
+    private void SaveCurrentLevel()
+    {
+        if (string.IsNullOrEmpty(userId) || databaseReference == null)
+        {
+            Debug.LogError("databaseReference chưa được khởi tạo");
+            return;
+        }
+
+        databaseReference.Child("users").Child(userId).Child("currentLevel").SetValueAsync(currentLevel).ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                Debug.Log("Đã lưu level: " + currentLevel);
+            }
+            else
+            {
+                Debug.LogError("Lỗi khi lưu level: " + task.Exception);
             }
         });
     }
 
-
-    private IEnumerator LoadLevelFromFirebase()
+    public void NewGame()
     {
-        while (user == null) 
+        currentLevel = 1;
+
+        LoadCurrentLevel(currentLevel);
+
+        if (string.IsNullOrEmpty(userId))
         {
-            yield return null;
-        }
-
-            reference.Child("users")
-            .Child(user.UserId)
-            .Child("currentLevel")
-            .GetValueAsync()
-            .ContinueWith(task =>
-            {
-                if (task.IsCompleted && task.Result.Exists)
-                {
-                    int currentLevel = int.Parse(task.Result.Value.ToString());
-                    Debug.Log($"Loaded Level {currentLevel} from Firebase.");
-                    LoadLevel(currentLevel);
-                }
-                else
-                {
-                    Debug.LogWarning("No saved level found. Defaulting to Level 1.");
-                    SaveLevelToFirebase(1);
-                    LoadLevel(1);
-                }
-            });
-    }
-
-
-    private void LoadLevel(int level)
-    {
-        foreach (Transform child in levelParent)
-        {
-            Destroy(child.gameObject);
-        }
-
-       
-        if (level > 0 && level <= levelPrefabs.Length)
-        {
-            GameObject loadedLevel = Instantiate(levelPrefabs[level - 1], levelParent);
-            Debug.Log($"Level {level} loaded.");
-
-         
-            StartPosManager startPosManager = loadedLevel.GetComponentInChildren<StartPosManager>();
-            if (startPosManager != null)
-            {
-                Vector3 startPosition = startPosManager.GetStartPosition();
-                SetPlayerPos(startPosition);
-            }
-            else
-            {
-                Debug.LogError("No StartPosManager found in the level prefab.");
-            }
+            Debug.LogWarning("Người dùng chưa đăng nhập");
         }
         else
         {
-            Debug.LogError($"Invalid level index: {level}. Check your prefab list.");
+            SaveCurrentLevel();
         }
+
+
     }
 
-    
-    public void PlayerCompletedLevel()
-    {
-        int nextLevel = GetCurrentLevel() + 1;
 
-        if (nextLevel <= levelPrefabs.Length)
+    public void NextLevel()
+    {
+        listMap[currentLevel - 1].SetActive(false);
+
+        currentLevel++;
+
+        listMap[currentLevel - 1].SetActive(true);
+
+        if (string.IsNullOrEmpty(userId))
         {
-            SaveLevelToFirebase(nextLevel);
-            LoadLevel(nextLevel);
+            Debug.LogWarning("Người dùng chưa đăng nhập");
         }
         else
         {
-            Debug.Log("Player has completed all available levels!");
+            SaveCurrentLevel();
         }
+
     }
 
-    
-    private int GetCurrentLevel()
+    public void ContinueGame()
     {
-        foreach (Transform child in levelParent)
-        {
-            for (int i = 0; i < levelPrefabs.Length; i++)
-            {
-                if (child.name.Contains(levelPrefabs[i].name))
-                {
-                    return i + 1;
-                }
-            }
-        }
-        return 1;
+        LoadCurrentLevel(currentLevel);
     }
 
-    private void SetPlayerPos(Vector3 position)
-    {
-       PlayerControl.Instance.transform.position = position;
-    }
 }

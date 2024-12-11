@@ -38,10 +38,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public void Replay()
+    public void CheckSpawnPos()
     {
-        UIManager.Instance.DeathPanel.SetActive(false);
-
         if (UIManager.Instance.Map1.gameObject.activeInHierarchy)
         {
             if (currentCheckPoint == null)
@@ -75,6 +73,13 @@ public class GameManager : Singleton<GameManager>
                 PlayerControl.Instance.transform.position = currentCheckPoint.position;
             }
         }
+    }
+
+    public void Replay()
+    {
+        UIManager.Instance.DeathPanel.SetActive(false);
+
+        CheckSpawnPos();
 
         if (UIManager.Instance.Map2.activeInHierarchy || UIManager.Instance.Map3.activeInHierarchy)
         {
