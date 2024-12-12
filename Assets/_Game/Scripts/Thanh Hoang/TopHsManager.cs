@@ -5,10 +5,10 @@ using Firebase.Database;
 
 public class TopHsManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Text[] playerNameTexts; // Các Text hiển thị tên người chơi
-    [SerializeField] private TMP_Text[] playerScoreTexts; // Các Text hiển thị điểm
-    [SerializeField] private GameObject panelHs; // Panel hiển thị bảng top high scores
-    private DatabaseReference reference; // Tham chiếu Firebase Database
+    [SerializeField] private TMP_Text[] playerNameTexts; 
+    [SerializeField] private TMP_Text[] playerScoreTexts; 
+    [SerializeField] private GameObject panelHs; 
+    private DatabaseReference reference; 
 
     void Start()
     {

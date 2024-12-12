@@ -44,11 +44,9 @@ public class DataLevelManager : Singleton<DataLevelManager>
 
     public async void CheckCurrentLevel()
     {
-        // lỗi vãi đái
         if (string.IsNullOrEmpty(userId))
         {
             currentLevel = 1;
-            //return;
         }
 
         try

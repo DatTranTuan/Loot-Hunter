@@ -134,7 +134,11 @@ public class UIManager : Singleton<UIManager>
 
     public void ClickQuitMenuBtn()
     {
+        pausePanel.SetActive(false);
         allMap.SetActive(false);
         homePanel.SetActive(true);
+        HomeManager.Instance.EventSystem.SetActive(true);
+       /* SoundManager.Instance.stopAll();
+        */
     }
 }

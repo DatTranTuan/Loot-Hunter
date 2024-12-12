@@ -63,6 +63,7 @@ public class HomeManager : Singleton<HomeManager>
         homePanel.SetActive(false);
         allMap.SetActive(true);
         DataLevelManager.Instance.NewGame();
+        GameManager.Instance.ReloadAllBot();
     }
 
     private void ContinueGame()
