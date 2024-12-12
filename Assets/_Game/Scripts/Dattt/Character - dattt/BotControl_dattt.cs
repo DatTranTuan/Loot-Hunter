@@ -410,12 +410,19 @@ public class BotControl_dattt : Singleton<BotControl_dattt>
         {
             isDeath = false;
             currentHealth = DataManager.Instance.GetBotData(botType).maxHealth;
-            if (stateMachine.ActiveStates != null && stateMachine.GetState(typeof(S_Death)) != null)
-            {
-                StateMachine.Exit(StateMachine.GetState(typeof(S_Death)));
-            }
+
+            //if (stateMachine.ActiveStates != null && stateMachine.GetState(typeof(S_Death)) != null)
+            //{
+            //    StateMachine.Exit(StateMachine.GetState(typeof(S_Death)));
+            //    stateMachine.ActiveStates.Clear();
+            //}
+            //else
+            //{
+            //    stateMachine.ActiveStates.Clear();
+            //}
 
             stateMachine.ActiveStates.Clear();
+
             ChangeIdle();
         }
     }

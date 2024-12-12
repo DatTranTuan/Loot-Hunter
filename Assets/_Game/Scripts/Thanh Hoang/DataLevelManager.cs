@@ -133,6 +133,8 @@ public class DataLevelManager : Singleton<DataLevelManager>
     public void ContinueGame()
     {
         LoadCurrentLevel(currentLevel);
+        GameManager.Instance.CurrentCheckPoint = null;
+        GameManager.Instance.CheckSpawnPos();
     }
 
 }

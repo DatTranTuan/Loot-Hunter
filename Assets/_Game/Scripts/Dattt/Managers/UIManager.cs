@@ -43,6 +43,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject DeathPanel { get => DeathPanel1; set => DeathPanel1 = value; }
     public GameObject DeathPanel1 { get => deathPanel; set => deathPanel = value; }
     public GameObject EndGamePanel { get => endGamePanel; set => endGamePanel = value; }
+    public GameObject EventSystem { get => eventSystem; set => eventSystem = value; }
 
     private void Start()
     {
@@ -119,7 +120,8 @@ public class UIManager : Singleton<UIManager>
         homePanel.SetActive(true);
 
         HomeManager.Instance.EventSystem.SetActive(true);
-        this.eventSystem.SetActive(false);
+        this.EventSystem.SetActive(false);
+        HomeManager.Instance.EventSystem.SetActive(true);
     }
 
     public void ClickPauseBtn()
@@ -138,7 +140,5 @@ public class UIManager : Singleton<UIManager>
         allMap.SetActive(false);
         homePanel.SetActive(true);
         HomeManager.Instance.EventSystem.SetActive(true);
-       /* SoundManager.Instance.stopAll();
-        */
     }
 }
