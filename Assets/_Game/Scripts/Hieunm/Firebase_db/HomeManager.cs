@@ -37,6 +37,7 @@ public class HomeManager : Singleton<HomeManager>
     [SerializeField] private GameObject eventSystem;
 
     public GameObject EventSystem { get => eventSystem; set => eventSystem = value; }
+    public GameObject AllMap { get => allMap; set => allMap = value; }
 
     void Start()
     {
@@ -61,8 +62,12 @@ public class HomeManager : Singleton<HomeManager>
         Debug.Log("Starting a new game...");
         loginPanel.SetActive(false);
         homePanel.SetActive(false);
-        allMap.SetActive(true);
+        AllMap.SetActive(true);
         DataLevelManager.Instance.NewGame();
+
+        UIManager.Instance.EventSystem.SetActive(true);
+        GameManager.Instance.CurrentCheckPoint = null;
+        GameManager.Instance.CheckSpawnPos();
     }
 
     private void ContinueGame()
@@ -75,10 +80,10 @@ public class HomeManager : Singleton<HomeManager>
         loginPanel.SetActive(false);
         homePanel.SetActive(false);
 
-        allMap.SetActive(true);
+        AllMap.SetActive(true);
 
+        UIManager.Instance.EventSystem.SetActive(true);
         DataLevelManager.Instance.ContinueGame();
-        GameManager.Instance.CheckSpawnPos();
     }
 
     private void OpenSettings()

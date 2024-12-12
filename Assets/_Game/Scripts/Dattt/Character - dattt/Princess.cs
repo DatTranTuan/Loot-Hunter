@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Princess : MonoBehaviour
+public class Princess : Singleton<Princess>
 {
     [SerializeField] private BotAnimation animator;
 

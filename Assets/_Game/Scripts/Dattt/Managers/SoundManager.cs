@@ -47,6 +47,14 @@ public class SoundManager : Singleton<SoundManager>
         s.source.Stop();
     }
 
+    public void StopAll()
+    {
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            sounds[i].source.Stop();
+        }
+    }
+
     public void TurnOffVolume()
     {
         foreach (Sound s in sounds)
