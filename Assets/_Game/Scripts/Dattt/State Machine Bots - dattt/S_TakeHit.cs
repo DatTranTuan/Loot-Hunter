@@ -31,7 +31,9 @@ public class S_TakeHit : IStateNormal
 
             DataScoreManager.Instance.AddScore();
             DataScoreManager.Instance.SetActiveHighScore();
-            
+
+            //DataLevelManager.Instance.NextLevel();
+            //GameManager.Instance.CheckSpawnPos();
 
             if (botControl_dattt.BotType == BotType.GolemBoss || botControl_dattt.BotType == BotType.DeathBringer)
             {

@@ -106,7 +106,7 @@ public class HomeManager : Singleton<HomeManager>
         DataLevelManager.Instance.NewGame();
 
         GameManager.Instance.CurrentCheckPoint = null;
-        
+        GameManager.Instance.CheckSpawnPos();
     }
 
     private void ContinueGame()
