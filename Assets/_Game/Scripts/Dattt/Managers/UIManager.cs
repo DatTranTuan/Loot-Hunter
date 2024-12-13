@@ -119,9 +119,9 @@ public class UIManager : Singleton<UIManager>
         allMap.SetActive(false);
         homePanel.SetActive(true);
 
-        HomeManager.Instance.EventSystem.SetActive(true);
-        this.EventSystem.SetActive(false);
-        HomeManager.Instance.EventSystem.SetActive(true);
+        //HomeManager.Instance.EventSystem.SetActive(true);
+        //this.EventSystem.SetActive(false);
+        //HomeManager.Instance.EventSystem.SetActive(true);
     }
 
     public void ClickPauseBtn()
@@ -139,6 +139,6 @@ public class UIManager : Singleton<UIManager>
         pausePanel.SetActive(false);
         allMap.SetActive(false);
         homePanel.SetActive(true);
-        HomeManager.Instance.EventSystem.SetActive(true);
+        //HomeManager.Instance.EventSystem.SetActive(true);
     }
 }

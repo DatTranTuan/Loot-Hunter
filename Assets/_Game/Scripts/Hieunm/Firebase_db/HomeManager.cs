@@ -30,7 +30,6 @@ public class HomeManager : Singleton<HomeManager>
     [Header("Settings Panel")]
     public GameObject settingsPanel;
 
-
     [SerializeField] private GameObject allMap;
 
     [SerializeField] private GameObject hieunm;
@@ -41,11 +40,52 @@ public class HomeManager : Singleton<HomeManager>
 
     void Start()
     {
-        // Khởi tạo Firebase Auth
+        CheckFirebaseDependencies();
+    }
+
+    private void CheckFirebaseDependencies()
+    {
+        //FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        //{
+        //    var dependencyStatus = task.Result;
+        //    if (dependencyStatus == DependencyStatus.Available)
+        //    {
+        //        InitializeFirebase();
+        //    }
+        //    else
+        //    {
+        //        Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
+        //    }
+        //});
+
+        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == Firebase.DependencyStatus.Available)
+            {
+                // Create and hold a reference to your FirebaseApp,
+                // where app is a Firebase.FirebaseApp property of your application class.
+                //app = Firebase.FirebaseApp.DefaultInstance;
+                InitializeFirebase();
+
+                // Set a flag here to indicate whether Firebase is ready to use by your app.
+            }
+            else
+            {
+                UnityEngine.Debug.LogError(System.String.Format(
+                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                // Firebase Unity SDK is not safe to use here.
+            }
+        });
+    }
+
+    private void InitializeFirebase()
+    {
+        // Khởi tạo Firebase Auth và Database
         auth = FirebaseAuth.DefaultInstance;
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
         // Gán sự kiện cho các nút
+        Debug.LogError("111111 Firebase initialized successfully.");
         newGameButton.onClick.AddListener(NewGame);
         continueButton.onClick.AddListener(ContinueGame);
         settingsButton.onClick.AddListener(ShowSettings);
@@ -53,43 +93,37 @@ public class HomeManager : Singleton<HomeManager>
         quitAccountButton.onClick.AddListener(QuitAccount);
         HighScoreButton.onClick.AddListener(HighScoreTop);
 
+        Debug.LogError("2222222 Firebase initialized successfully.");
+        DataLevelManager.Instance.FireBaseInit();
     }
 
     private void NewGame()
     {
-        eventSystem.SetActive(false);
-
         Debug.Log("Starting a new game...");
         loginPanel.SetActive(false);
         homePanel.SetActive(false);
         AllMap.SetActive(true);
         DataLevelManager.Instance.NewGame();
 
-        UIManager.Instance.EventSystem.SetActive(true);
         GameManager.Instance.CurrentCheckPoint = null;
         GameManager.Instance.CheckSpawnPos();
     }
 
     private void ContinueGame()
     {
-        eventSystem.SetActive(false);
-
         Debug.Log("Continuing the game...");
-        // Thêm logic tiếp tục game (tải dữ liệu cũ)
 
         loginPanel.SetActive(false);
         homePanel.SetActive(false);
 
         AllMap.SetActive(true);
 
-        UIManager.Instance.EventSystem.SetActive(true);
         DataLevelManager.Instance.ContinueGame();
     }
 
     private void OpenSettings()
     {
         Debug.Log("Opening settings...");
-        
     }
 
     private void QuitGame()
@@ -101,9 +135,8 @@ public class HomeManager : Singleton<HomeManager>
     private void QuitAccount()
     {
         Debug.Log("Logging out...");
-        auth.SignOut(); // Đăng xuất tài khoản
+        auth.SignOut();
 
-        // Làm sạch dữ liệu tạm thời
         ClearUserNameDisplay();
         ShowLogin();
     }
@@ -112,14 +145,14 @@ public class HomeManager : Singleton<HomeManager>
     {
         settingsPanel.SetActive(false);
         highScorePanel.SetActive(false);
-    }    
+    }
 
     private void ShowLogin()
     {
-        loginPanel.SetActive(true); // Chuyển về màn hình đăng nhập
+        loginPanel.SetActive(true);
         homePanel.SetActive(false);
         settingsPanel.SetActive(false);
-    }    
+    }
 
     private void ShowSettings()
     {

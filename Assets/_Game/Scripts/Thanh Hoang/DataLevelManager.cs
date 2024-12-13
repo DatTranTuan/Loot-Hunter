@@ -14,10 +14,10 @@ public class DataLevelManager : Singleton<DataLevelManager>
     private int currentLevel;
     private int testLevel;
 
-    private void Start()
-    {
-        FireBaseInit();
-    }
+    //private void Start()
+    //{
+    //    FireBaseInit();
+    //}
 
     public void FireBaseInit()
     {
