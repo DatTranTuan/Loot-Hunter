@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class HomeManager : MonoBehaviour
+public class HomeManager : Singleton<HomeManager>
 {
     public FirebaseManager firebaseManager;
     private FirebaseAuth auth;
@@ -30,16 +30,62 @@ public class HomeManager : MonoBehaviour
     [Header("Settings Panel")]
     public GameObject settingsPanel;
 
+    [SerializeField] private GameObject allMap;
 
-    [SerializeField] private GameObject map1;
+    [SerializeField] private GameObject hieunm;
+    [SerializeField] private GameObject eventSystem;
+
+    public GameObject EventSystem { get => eventSystem; set => eventSystem = value; }
+    public GameObject AllMap { get => allMap; set => allMap = value; }
 
     void Start()
     {
-        // Khởi tạo Firebase Auth
+        CheckFirebaseDependencies();
+    }
+
+    private void CheckFirebaseDependencies()
+    {
+        //FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        //{
+        //    var dependencyStatus = task.Result;
+        //    if (dependencyStatus == DependencyStatus.Available)
+        //    {
+        //        InitializeFirebase();
+        //    }
+        //    else
+        //    {
+        //        Debug.LogError($"Could not resolve all Firebase dependencies: {dependencyStatus}");
+        //    }
+        //});
+
+        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == Firebase.DependencyStatus.Available)
+            {
+                // Create and hold a reference to your FirebaseApp,
+                // where app is a Firebase.FirebaseApp property of your application class.
+                //app = Firebase.FirebaseApp.DefaultInstance;
+                InitializeFirebase();
+
+                // Set a flag here to indicate whether Firebase is ready to use by your app.
+            }
+            else
+            {
+                UnityEngine.Debug.LogError(System.String.Format(
+                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                // Firebase Unity SDK is not safe to use here.
+            }
+        });
+    }
+
+    private void InitializeFirebase()
+    {
+        // Khởi tạo Firebase Auth và Database
         auth = FirebaseAuth.DefaultInstance;
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
         // Gán sự kiện cho các nút
+        Debug.LogError("111111 Firebase initialized successfully.");
         newGameButton.onClick.AddListener(NewGame);
         continueButton.onClick.AddListener(ContinueGame);
         settingsButton.onClick.AddListener(ShowSettings);
@@ -47,26 +93,37 @@ public class HomeManager : MonoBehaviour
         quitAccountButton.onClick.AddListener(QuitAccount);
         HighScoreButton.onClick.AddListener(HighScoreTop);
 
+        Debug.LogError("2222222 Firebase initialized successfully.");
+        DataLevelManager.Instance.FireBaseInit();
     }
 
     private void NewGame()
     {
         Debug.Log("Starting a new game...");
-        homePanel.SetActive(false);
         loginPanel.SetActive(false);
-        map1.SetActive(true);
+        homePanel.SetActive(false);
+        AllMap.SetActive(true);
+        DataLevelManager.Instance.NewGame();
+
+        GameManager.Instance.CurrentCheckPoint = null;
+        
     }
 
     private void ContinueGame()
     {
         Debug.Log("Continuing the game...");
-        // Thêm logic tiếp tục game (tải dữ liệu cũ)
+
+        loginPanel.SetActive(false);
+        homePanel.SetActive(false);
+
+        AllMap.SetActive(true);
+
+        DataLevelManager.Instance.ContinueGame();
     }
 
     private void OpenSettings()
     {
         Debug.Log("Opening settings...");
-        
     }
 
     private void QuitGame()
@@ -78,9 +135,8 @@ public class HomeManager : MonoBehaviour
     private void QuitAccount()
     {
         Debug.Log("Logging out...");
-        auth.SignOut(); // Đăng xuất tài khoản
+        auth.SignOut();
 
-        // Làm sạch dữ liệu tạm thời
         ClearUserNameDisplay();
         ShowLogin();
     }
@@ -89,14 +145,14 @@ public class HomeManager : MonoBehaviour
     {
         settingsPanel.SetActive(false);
         highScorePanel.SetActive(false);
-    }    
+    }
 
     private void ShowLogin()
     {
-        loginPanel.SetActive(true); // Chuyển về màn hình đăng nhập
+        loginPanel.SetActive(true);
         homePanel.SetActive(false);
         settingsPanel.SetActive(false);
-    }    
+    }
 
     private void ShowSettings()
     {
