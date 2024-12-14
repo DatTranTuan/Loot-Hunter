@@ -75,6 +75,6 @@ MonoBehaviour:
     bulletDmgDeal: 40
   - name: Cthulu
     botType: 12
-    maxHealth: 900
+    maxHealth: 800
     handDmgDeal: 110
     bulletDmgDeal: 40
