@@ -52,7 +52,8 @@ public class FirebaseManager : MonoBehaviour
     public Image toggleIcon3;
     public Sprite showPasswordIcon3;
     public Sprite hidePasswordIcon3;
-
+    [SerializeField] private TMP_Text loginStatusText;
+    [SerializeField] private TMP_Text registerStatusText;
     private bool isPasswordVisible = false;
 
     void Start()
@@ -83,78 +84,61 @@ public class FirebaseManager : MonoBehaviour
         forgot_btn.onClick.AddListener(ForgotPass);
     }
 
+    private void activeNotiLogin()
+    {
+        loginStatusText.gameObject.SetActive(true);
+        loginStatusText.color = Color.red;
+    }
 
+    private void activeNotiRegister()
+    {
+        registerStatusText.gameObject.SetActive(true);
+        registerStatusText.color = Color.red;
+    }
     public void LoginUser()
     {
-        string loginemail = loginemailField.text.Trim();
-        string loginpass = loginpasswordField.text;
+        string email = loginemailField.text;
+        string password = loginpasswordField.text;
 
-        // Kiểm tra email
-        if (string.IsNullOrEmpty(loginemail))
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
-            Debug.Log("Email cannot be empty!");
-            return; // Dừng lại nếu email trống
+            loginStatusText.text = "Email và mật khẩu không được để trống!";
+           
+            activeNotiLogin();
+            return;
         }
 
-        // Kiểm tra định dạng email
-        if (!IsValidEmail2(loginemail))
+        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
         {
-            Debug.Log("Please enter a valid email address!");
-            return; // Dừng lại nếu email không hợp lệ
-        }
-
-        // Kiểm tra mật khẩu
-        if (string.IsNullOrEmpty(loginpass))
-        {
-            Debug.Log("Password cannot be empty!");
-            return; // Dừng lại nếu mật khẩu trống
-        }
-
-        // Tiến hành đăng nhập người dùng
-        auth.SignInWithEmailAndPasswordAsync(loginemail, loginpass).ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCanceled)
+            if (task.IsFaulted || task.IsCanceled)
             {
-                Debug.Log("Login process was canceled. Please try again.");
-                return; // Không chuyển màn nếu bị hủy
-            }
+                FirebaseException firebaseEx = task.Exception?.Flatten().InnerExceptions[0] as FirebaseException;
+                AuthError errorCode = (AuthError)firebaseEx?.ErrorCode;
 
-            if (task.IsFaulted)
-            {
-                // Xử lý các lỗi từ Firebase
-                FirebaseException firebaseEx = task.Exception?.GetBaseException() as FirebaseException;
-                if (firebaseEx != null)
+                switch (errorCode)
                 {
-                    AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
-                    switch (errorCode)
-                    {
-                        case AuthError.InvalidEmail:
-                            Debug.Log("The email address is invalid. Please check and try again.");
-                            break;
-                        case AuthError.WrongPassword:
-                            Debug.Log("Incorrect password. Please try again.");
-                            break;
-                        case AuthError.UserNotFound:
-                            Debug.Log("No account found with this email. Please register first.");
-                            break;
-                        default:
-                            Debug.Log($"Login failed with error: {firebaseEx.Message}");
-                            break;
-                    }
+                    case AuthError.InvalidEmail:
+                        loginStatusText.text = "Email không hợp lệ.";
+                        activeNotiLogin();
+                        break;
+                    case AuthError.WrongPassword:
+                        loginStatusText.text = "Mật khẩu không chính xác.";
+                        activeNotiLogin();
+                        break;
+                    case AuthError.UserNotFound:
+                        loginStatusText.text = "Người dùng không tồn tại.";
+                        activeNotiLogin();
+                        break;
+                    default:
+                        loginStatusText.text = "Đăng nhập thất bại. Vui lòng thử lại.";
+                        activeNotiLogin();
+                        break;
                 }
-                else
-                {
-                    Debug.Log("An unknown error occurred. Please try again.");
-                }
-                return; // Không chuyển màn nếu có lỗi
             }
-
-            if (task.IsCompleted)
+            else
             {
-                Debug.Log("Login successful!");
-                FirebaseUser user = task.Result.User;
-                
-                // Chuyển sang màn hình chính
+                loginStatusText.text = "Đăng nhập thành công!";
+                activeNotiLogin();
                 ShowHome();
                 DisplayUserName();
             }
@@ -177,75 +161,74 @@ public class FirebaseManager : MonoBehaviour
 
     public void RegisterUser()
     {
-        string regisusername = regisusernameField.text;
-        string regisemail = regisemailField.text;
-        string regispassword = regispasswordField.text;
-        string regisconfirmpassword = regisconfirmPasswordField.text;
+        string username = regisusernameField.text;
+        string email = regisemailField.text;
+        string password = regispasswordField.text;
+        string confirmPassword = regisconfirmPasswordField.text;
 
-        // Kiểm tra tên người dùng
-        if (string.IsNullOrEmpty(regisusername))
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) ||
+            string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword))
         {
-            Debug.Log("Username is empty");
-            return; // Dừng lại nếu tên người dùng trống
+            registerStatusText.text = "Vui lòng điền đầy đủ thông tin.";
+            activeNotiRegister();
+            return;
         }
 
-        // Kiểm tra email
-        if (string.IsNullOrEmpty(regisemail))
+        if (password != confirmPassword)
         {
-            Debug.Log("Email is empty");
-            return; // Dừng lại nếu email trống
+            registerStatusText.text = "Mật khẩu không khớp.";
+            activeNotiRegister();
+            return;
         }
 
-        // Kiểm tra định dạng email
-        if (!IsValidEmail(regisemail))
+        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
         {
-            Debug.Log("Invalid email format");
-            return; // Dừng lại nếu email không hợp lệ
-        }
-
-        // Kiểm tra mật khẩu
-        if (string.IsNullOrEmpty(regispassword))
-        {
-            Debug.Log("Password is empty");
-            return; // Dừng lại nếu mật khẩu trống
-        }
-
-        // Kiểm tra xác nhận mật khẩu
-        if (regispassword != regisconfirmpassword)
-        {
-            Debug.LogError("Password does not match");
-            return; // Dừng lại nếu mật khẩu không khớp
-        }
-
-        // Kiểm tra độ dài mật khẩu
-        if (regispassword.Length < 6)
-        {
-            Debug.Log("Password must be at least 6 characters long");
-            return; // Dừng lại nếu mật khẩu ngắn hơn 6 ký tự
-        }
-
-        // Tiến hành đăng ký người dùng
-        auth.CreateUserWithEmailAndPasswordAsync(regisemail, regispassword).ContinueWithOnMainThread(task =>
+            if (task.IsFaulted || task.IsCanceled)
             {
-                if (task.IsCanceled)
-                {
-                    Debug.Log("Registration canceled");
-                    return;
-                }
-                if (task.IsFaulted)
-                {
-                    Debug.Log("Registration failed");
-                }
-                if (task.IsCompleted)
-                {
-                    Debug.Log("Registration successful");
-                    FirebaseUser newUser = task.Result.User;
-                    SaveUserData(newUser.UserId, regisusername, regisemail);
-                    ShowLogin();
-                }
+                FirebaseException firebaseEx = task.Exception?.Flatten().InnerExceptions[0] as FirebaseException;
+                AuthError errorCode = (AuthError)firebaseEx?.ErrorCode;
 
+                switch (errorCode)
+                {
+                    case AuthError.EmailAlreadyInUse:
+                        registerStatusText.text = "Email đã được sử dụng.";
+                        activeNotiRegister();
+                        break;
+                    case AuthError.InvalidEmail:
+                        registerStatusText.text = "Email không hợp lệ.";
+                        activeNotiRegister();
+                        break;
+                    case AuthError.WeakPassword:
+                        registerStatusText.text = "Mật khẩu quá yếu.";
+                        activeNotiRegister();
+                        break;
+                    default:
+                        registerStatusText.text = "Đăng ký thất bại. Vui lòng thử lại.";
+                        activeNotiRegister();
+                        break;
+                }
+            }
+            else
+            {
+               
+                FirebaseUser newUser = task.Result.User;
+                UserProfile profile = new UserProfile { DisplayName = username };
+
+                newUser.UpdateUserProfileAsync(profile).ContinueWithOnMainThread(updateTask =>
+                {
+                    if (updateTask.IsCompleted)
+                    {
+                        databaseReference.Child("users").Child(newUser.UserId).Child("username").SetValueAsync(username);
+                        registerStatusText.text = "Đăng ký thành công!";
+                        activeNotiRegister();
+                        ShowLogin();
+                       
+                    }
+                });
+            }
         });
     }
+
 
     // Hàm kiểm tra định dạng email
     private bool IsValidEmail(string email)
@@ -281,6 +264,7 @@ public class FirebaseManager : MonoBehaviour
                     if (snapshot.Exists && snapshot.Value != null)
                     {
                         string username = snapshot.Value.ToString().Trim();
+                        
                         if (!string.IsNullOrEmpty(username))
                         {
                             Debug.Log($"Username fetched: {username}");
