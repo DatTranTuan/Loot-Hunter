@@ -107,6 +107,8 @@ public class HomeManager : Singleton<HomeManager>
 
         GameManager.Instance.CurrentCheckPoint = null;
         GameManager.Instance.CheckSpawnPos();
+
+        UIManager.Instance.TutPanel.SetActive(true);
     }
 
     private void ContinueGame()

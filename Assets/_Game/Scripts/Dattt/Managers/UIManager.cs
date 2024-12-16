@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private GameObject eventSystem;
+    [SerializeField] private GameObject tutPanel;
+    [SerializeField] private Button quitTutBtn;
 
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject playPanel;
@@ -44,6 +46,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject DeathPanel1 { get => deathPanel; set => deathPanel = value; }
     public GameObject EndGamePanel { get => endGamePanel; set => endGamePanel = value; }
     public GameObject EventSystem { get => eventSystem; set => eventSystem = value; }
+    public GameObject TutPanel { get => tutPanel; set => tutPanel = value; }
 
     private void Start()
     {
@@ -66,6 +69,8 @@ public class UIManager : Singleton<UIManager>
         resumeBtn.onClick.AddListener(ClickResumeBtn);
         restart2Btn.onClick.AddListener(ClickRestartBtn);
         quitMenuBtn.onClick.AddListener(ClickQuitMenuBtn);
+
+        quitTutBtn.onClick.AddListener(ClickExitTutorialBtn);
     }
 
     public void ClickNextLevel()
@@ -140,5 +145,10 @@ public class UIManager : Singleton<UIManager>
         allMap.SetActive(false);
         homePanel.SetActive(true);
         //HomeManager.Instance.EventSystem.SetActive(true);
+    }
+
+    public void ClickExitTutorialBtn()
+    {
+        tutPanel.SetActive(false);
     }
 }
