@@ -85,7 +85,6 @@ public class HomeManager : Singleton<HomeManager>
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
         // Gán sự kiện cho các nút
-        Debug.LogError("111111 Firebase initialized successfully.");
         newGameButton.onClick.AddListener(NewGame);
         continueButton.onClick.AddListener(ContinueGame);
         settingsButton.onClick.AddListener(ShowSettings);
@@ -93,7 +92,6 @@ public class HomeManager : Singleton<HomeManager>
         quitAccountButton.onClick.AddListener(QuitAccount);
         HighScoreButton.onClick.AddListener(HighScoreTop);
 
-        Debug.LogError("2222222 Firebase initialized successfully.");
         DataLevelManager.Instance.FireBaseInit();
     }
 
